@@ -1,0 +1,17 @@
+
+`	java:S1121"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+e
+java:S2095"JUse try-with-resources or close this "ServerSocket" in a "finally" clause.(Ç·‚åÿÿÿÿÿ
+=
+java:S2189""Add an end condition to this loop.(˜ïˆÿÿÿÿÿ
+=
+java:S2189+""Add an end condition to this loop.(˜ïˆÿÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(¬‰‘â
+>	java:S108")Either remove or fill this block of code.(ï­£Ä
+Œ
+java:S1130%"qRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from constructor's body.(ƒ“Åüûÿÿÿÿ
+N	java:S106."9Replace this use of System.out or System.err by a logger.(Šğš
+Y
+java:S1128"<Remove this unused import 'org.example.server_client.Query'.(è½ı8£çàÄ0
+T
+java:S1068"9Remove this unused "authenticationManager" private field.(’ûêøÿÿÿÿ
