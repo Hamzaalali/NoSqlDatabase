@@ -15,6 +15,7 @@ public class DatabaseQueryFactory {
         databaseQueryMap.put(QueryType.DELETE_DATABASE,new DeleteDatabaseQuery());
         databaseQueryMap.put(QueryType.DELETE_COLLECTION,new DeleteCollectionQuery());
         databaseQueryMap.put(QueryType.DELETE_DOCUMENT,new DeleteDocumentQuery());
+        databaseQueryMap.put(QueryType.UPDATE_DOCUMENT,new UpdateDocumentQuery());
         return databaseQueryMap;
     }
 }

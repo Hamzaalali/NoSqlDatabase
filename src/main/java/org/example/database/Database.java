@@ -1,13 +1,8 @@
 package org.example.database;
 
 import org.example.database.collection.Collection;
-import org.example.index.BPlusTree.BTree;
-import org.example.server_client.Query;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Database {

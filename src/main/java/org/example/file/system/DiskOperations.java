@@ -1,10 +1,7 @@
 package org.example.file.system;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.example.database.Database;
 import org.example.database.collection.document.DocumentSchema;
-import org.example.server_client.Query;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 
@@ -58,26 +54,6 @@ public class DiskOperations {
         }
         return appendDocument(databaseName,collectionName,document);
     }
-//    public static void deleteDocument(Query query,JSONObject indexObject) throws IOException {
-//        RandomAccessFile readerWriter = new RandomAccessFile(collectionPath(query), "rw");
-//        FileChannel channel = readerWriter.getChannel();
-//        int start= (int) indexObject.get("start");
-//        int end= (int) indexObject.get("end");
-//        int fileSize= (int) channel.size();
-//        if(start==1&&end!=fileSize-2){
-//            end++;
-//        }
-//        if(start!=1&&end==fileSize-2){
-//            start--;
-//        }
-//        if(start!=-1&&end!=fileSize-2){
-//            start--;
-//        }
-//        ByteBuffer buff = ByteBuffer.wrap((StringUtils.repeat(" ",end-start+1)).getBytes());
-//        channel.write(buff, start);
-//        channel.close();
-//        readerWriter.close();
-//    }
     private static JSONObject appendDocument(String databaseName,String collectionName,JSONObject document) throws IOException {
         RandomAccessFile readerWriter = new RandomAccessFile(collectionPath(databaseName,collectionName), "rw");
         FileChannel channel = readerWriter.getChannel();
@@ -137,12 +113,6 @@ public class DiskOperations {
         }
         channel.close();
         reader.close();
-//        JSONParser jsonParser = new JSONParser();
-//        FileReader collectionDataReader = new FileReader(collectionPath(query));
-//        Object obj = jsonParser.parse(collectionDataReader);
-//        JSONArray data = (JSONArray) obj;
-//        collectionDataReader.close();
-//        return data;
         return jsonArray;
     }
     private static void writeToFile(String filePath,String data) throws IOException {

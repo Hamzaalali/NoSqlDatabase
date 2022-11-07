@@ -9,6 +9,7 @@ public enum QueryType {
     FIND_ALL,
     DELETE_DATABASE,
     DELETE_COLLECTION,
-    DELETE_DOCUMENT
+    DELETE_DOCUMENT,
+    UPDATE_DOCUMENT
 
 }

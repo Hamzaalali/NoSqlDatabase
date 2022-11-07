@@ -1,1 +1,1 @@
-{"name":{"firstName":"STRING","secondName":"STRING"},"phones":[{"number":"STRING"}],"credit":"INTEGER"}
+{"firstName":"STRING","name":{"firstName":"STRING","secondName":"STRING"},"phones":[{"number":"STRING"}],"credit":"INTEGER"}

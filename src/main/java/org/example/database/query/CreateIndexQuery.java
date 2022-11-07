@@ -20,6 +20,7 @@ public class CreateIndexQuery extends DatabaseQuery {
             String databaseName= (String) query.get("databaseName");
             String collectionName= (String) query.get("collectionName");
             JSONObject indexPropertyObject=(JSONObject) query.get("indexProperty");
+
             JSONObject propertyJson=getIndexProperty(databaseName,collectionName,indexPropertyObject);
             String property= (String) propertyJson.get("key");
             DocumentDataTypes propertyDataType= (DocumentDataTypes) propertyJson.get("documentDataTypes");
@@ -46,7 +47,7 @@ public class CreateIndexQuery extends DatabaseQuery {
     }
     private JSONObject getIndexProperty(String databaseName,String collectionName,JSONObject indexPropertyObject) throws IOException, ParseException {
         DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
-        JSONObject propertyJson=documentSchema.searchForLeafProperty(indexPropertyObject);
+        JSONObject propertyJson=documentSchema.getLeafProperty(indexPropertyObject);
         return propertyJson;
     }
     private Index getIndexFromDataType(DocumentDataTypes propertyDataType){

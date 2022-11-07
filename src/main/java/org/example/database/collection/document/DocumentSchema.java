@@ -8,13 +8,13 @@ import java.util.*;
 public class DocumentSchema {
     private JSONObject schema;
     public DocumentSchema(JSONObject schema){
-        verifySchemaObject(schema);
+        verifyJsonTypes(schema);
         this.schema = schema;
     }
     public void verify(JSONObject jsonObject){
-        verifyJson(jsonObject, schema);
+        verifyDocumentJson(jsonObject, schema);
     }
-    private void verifyJson(JSONObject jsonObject,JSONObject documentSchema){
+    private void verifyDocumentJson(JSONObject jsonObject,JSONObject documentSchema){
         for (Object key : documentSchema.keySet()) {
             if(!jsonObject.containsKey(key)){
                 throw new IllegalArgumentException();
@@ -22,45 +22,45 @@ public class DocumentSchema {
             Object documentJsonValue=documentSchema.get(key);
             Object jsonObjectValue=jsonObject.get(key);
             if(documentJsonValue.getClass()==JSONObject.class){
-                verifyJson((JSONObject) jsonObjectValue,(JSONObject)documentJsonValue);
+                verifyDocumentJson((JSONObject) jsonObjectValue,(JSONObject)documentJsonValue);
                 continue;
             }
             if(documentJsonValue.getClass()== JSONArray.class|| documentJsonValue.getClass()==ArrayList.class){
-                verifyJsonList((List<Object>)jsonObjectValue,(List<Object>)documentJsonValue);
+                verifyDocumentJsonList((List<Object>)jsonObjectValue,(List<Object>)documentJsonValue);
                 continue;
             }
-            verifyJsonType(jsonObjectValue,documentJsonValue);
+            verifyValueType(jsonObjectValue,documentJsonValue);
         }
     }
-    private void verifyJsonList(List<Object> jsonList,List<Object>documentList){
+    private void verifyDocumentJsonList(List<Object> jsonList,List<Object>documentList){
         for (Object jsonObject:jsonList) {
-            verifyJson((JSONObject) jsonObject,(JSONObject) documentList.get(0));
+            verifyDocumentJson((JSONObject) jsonObject,(JSONObject) documentList.get(0));
         }
     }
-    private void verifyJsonType(Object jsonObjectValue,Object documentJsonValue){
+    private void verifyValueType(Object jsonObjectValue,Object documentJsonValue){
         String dataType=(String) documentJsonValue;
         if(!Objects.equals(dataType.toLowerCase(), jsonObjectValue.getClass().getSimpleName().toLowerCase())){
             throw new IllegalArgumentException();
         }
     }
-    public static void verifySchemaObject(JSONObject documentSchema){
+    public static void verifyJsonTypes(JSONObject documentSchema){
         for (Object value : documentSchema.values()) {
             if(value.getClass()== JSONObject.class ){
-                verifySchemaObject((JSONObject) value);
+                verifyJsonTypes((JSONObject) value);
                 continue;
             }
             if(value.getClass()== ArrayList.class || value.getClass()== JSONArray.class){
-                verifySchemaList((List<Object>) value);
+                verifyJsonTypesList((List<Object>) value);
                 continue;
             }
             isValidDataType((String)value);
         }
     }
-    private static void verifySchemaList(List<Object> jsonSchemaList){
+    private static void verifyJsonTypesList(List<Object> jsonSchemaList){
         if(jsonSchemaList.size()!=1){
             throw  new IllegalArgumentException();
         }
-        verifySchemaObject((JSONObject) jsonSchemaList.get(0));
+        verifyJsonTypes((JSONObject) jsonSchemaList.get(0));
     }
     private static void isValidDataType(String dataType){
         for (DocumentDataTypes dt : DocumentDataTypes.values()) {
@@ -70,22 +70,26 @@ public class DocumentSchema {
         }
         throw new IllegalArgumentException();
     }
-    public JSONObject searchForLeafProperty(JSONObject searchObject){
-        return searchForLeafProperty(searchObject,schema);
+    public JSONObject getLeafProperty(JSONObject searchObject){
+        StringBuilder keyHierarchy=new StringBuilder();
+        return searchForLeafProperty(searchObject,schema,keyHierarchy);
     }
-    private JSONObject searchForLeafProperty(JSONObject searchObject,JSONObject schemaObject){
+    private JSONObject searchForLeafProperty(JSONObject searchObject,JSONObject schemaObject,StringBuilder keyHierarchy){
         for (Object key : schemaObject.keySet()) {
             if(searchObject.containsKey(key)){
+                keyHierarchy.append(key);
                 Object schemaObjectValue=schemaObject.get(key);
                 Object searchObjectValue=searchObject.get(key);
                 if(schemaObjectValue.getClass()==JSONObject.class){
-                    return searchForLeafProperty((JSONObject) searchObjectValue,(JSONObject)schemaObjectValue);
+                    keyHierarchy.append(".");
+                    return searchForLeafProperty((JSONObject) searchObjectValue,(JSONObject)schemaObjectValue,keyHierarchy);
                 }
                 if(schemaObjectValue.getClass()==ArrayList.class || schemaObjectValue.getClass()== JSONArray.class){
-                    return searchForListLeafProperty((List<Object>)searchObjectValue,(List<Object>)schemaObjectValue);
+                    keyHierarchy.append(".");
+                    return searchForListLeafProperty((List<Object>)searchObjectValue,(List<Object>)schemaObjectValue,keyHierarchy);
                 }
                 JSONObject propertyJson=new JSONObject();
-                propertyJson.put("key",key);
+                propertyJson.put("key",keyHierarchy.toString());
                 propertyJson.put("value",searchObjectValue);
                 propertyJson.put("documentDataTypes",DocumentDataTypes.valueOf(searchObjectValue.getClass().getSimpleName().toUpperCase()));
                 return propertyJson;
@@ -93,11 +97,11 @@ public class DocumentSchema {
         }
         return null;
     }
-    private JSONObject searchForListLeafProperty(List<Object> searchObjectList,List<Object>schemaObjectList){
+    private JSONObject searchForListLeafProperty(List<Object> searchObjectList,List<Object>schemaObjectList,StringBuilder keyHierarchy){
         if(searchObjectList.size()!=1){
             throw  new IllegalArgumentException();
         }
-        return searchForLeafProperty((JSONObject) searchObjectList.get(0), (JSONObject) schemaObjectList.get(0));
+        return searchForLeafProperty((JSONObject) searchObjectList.get(0), (JSONObject) schemaObjectList.get(0),keyHierarchy);
     }
     public JSONObject getSchema() {
         return schema;

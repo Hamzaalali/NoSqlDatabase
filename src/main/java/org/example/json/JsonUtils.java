@@ -29,4 +29,25 @@ public class JsonUtils {
         }
         return searchForValue((JSONObject) searchObjectList.get(0), (JSONObject) schemaObjectList.get(0));
     }
+    public static void updateJsonObject(JSONObject oldJsonObject,JSONObject newJsonObject){
+        for (Object key : newJsonObject.keySet()) {
+            Object newJsonObjectValue=newJsonObject.get(key);
+            Object oldJsonObjectValue=oldJsonObject.get(key);
+            if(oldJsonObjectValue.getClass()==JSONObject.class){
+                updateJsonObject((JSONObject) oldJsonObjectValue,(JSONObject)newJsonObjectValue);
+                continue;
+            }
+            if(oldJsonObjectValue.getClass()== ArrayList.class||oldJsonObjectValue.getClass()== JSONArray.class){
+                 updateJsonList((List<JSONObject>)oldJsonObjectValue,(List<JSONObject>)newJsonObjectValue);
+                 continue;
+            }
+            oldJsonObject.remove(key);
+            oldJsonObject.put(key,newJsonObjectValue);
+        }
+    }
+    private static void updateJsonList(List<JSONObject> oldJsonObjectList,List<JSONObject>newJsonObjectList){
+        for(int i=0;i< newJsonObjectList.size();i++){
+            updateJsonObject( oldJsonObjectList.get(i),  newJsonObjectList.get(i));
+        }
+    }
 }

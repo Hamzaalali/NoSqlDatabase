@@ -1,7 +1,6 @@
 package org.example.index;
 
 import org.example.database.Database;
-import org.example.server_client.Query;
 import org.json.simple.JSONObject;
 import java.io.Serializable;
 import java.util.HashMap;

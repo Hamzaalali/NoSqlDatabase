@@ -1,9 +1,7 @@
 package org.example.database;
 
-import org.example.database.collection.document.DocumentDataTypes;
 import org.example.database.query.DatabaseQuery;
 import org.example.database.query.factory.DatabaseQueryFactory;
-import org.example.server_client.Query;
 import org.example.server_client.QueryType;
 import org.json.simple.JSONObject;
 

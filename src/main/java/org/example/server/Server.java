@@ -2,7 +2,6 @@ package org.example.server;
 
 import org.example.authentication.AuthenticationManager;
 import org.example.database.DatabaseFacade;
-import org.example.server_client.Query;
 import org.example.server_client.ServerClientCommunicator;
 import org.json.simple.JSONObject;
 

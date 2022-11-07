@@ -1,11 +1,7 @@
 package org.example.database.collection;
 
-import org.example.database.collection.document.DocumentDataTypes;
-import org.example.index.BPlusTree.BTree;
 import org.example.index.types.Index;
 import org.example.json.JsonUtils;
-import org.example.server_client.Query;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -34,8 +30,8 @@ public class Collection {
     public JSONObject getIndex( String id){
         return idIndex.get(id);
     }
-    public void addDocument(JSONObject document,JSONObject indexObject){
-        idIndex.put((String)indexObject.get("id"),indexObject);
+    public void addDocumentToIndexes(JSONObject document,JSONObject indexObject){
+        idIndex.put((String)indexObject.get("id"),indexObject);//add to id index
         for(String property:indexes.keySet()){//add document to current indexes
             Object value= JsonUtils.searchForValue(document,indexes.get(property).getIndexPropertyObject());
             addToIndex( property,value, (String) document.get("id"));
@@ -49,9 +45,9 @@ public class Collection {
     public boolean hasIndex(String property){
         return (indexes.containsKey(property));
     }
-    public void deleteDocument(String id){
-        idIndex.remove(id);
-
+    public void deleteDocument(JSONObject document){
+        idIndex.remove(document.get("id"));
+        removeFromAllIndexes(document);
     }
     public List<JSONObject> findAll(){
         return new ArrayList<>(idIndex.values());
@@ -60,7 +56,16 @@ public class Collection {
     public void deleteFromIndex(String property,Object key ){
         indexes.get(property).getIndex().delete((Comparable) key);
     }
-    public void updateDocument(JSONObject document,JSONObject newValue){
-
+    private void removeFromAllIndexes(JSONObject document){
+        for(Index index:indexes.values()){
+            JSONObject indexPropertyJson=index.getIndexPropertyObject();
+            Object value=JsonUtils.searchForValue(document,indexPropertyJson);
+            List<String>idsList= (List<String>) index.getIndex().search((Comparable) value);
+            idsList.remove(document.get("id"));
+            if(idsList.size()==0){
+                index.getIndex().delete((Comparable) value);
+            }
+        }
     }
+
 }
