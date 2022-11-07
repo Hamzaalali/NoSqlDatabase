@@ -23,16 +23,14 @@ public class DiskOperations {
         if(databaseExists(databaseName)){
             throw new DatabaseExistsException();
         }
-        String dataBaseDirectoryPath= createDirectoryIfNotFound(databasePath(databaseName));
+        createDirectoryIfNotFound(databasePath(databaseName));
     }
     public static void deleteDatabase(String databaseName) throws IOException {
         File databaseDirectory=new File(databasePath(databaseName));
         FileUtils.deleteDirectory(databaseDirectory);
     }
-    public static String createDirectoryIfNotFound(String directory) throws IOException {
-        String dataBaseDirectoryPath= directory;
-        Files.createDirectories(Paths.get(dataBaseDirectoryPath));
-        return dataBaseDirectoryPath;
+    public static void createDirectoryIfNotFound(String directory) throws IOException {
+        Files.createDirectories(Paths.get(directory));
     }
     public static void createCollection(String databaseName,String collectionName,JSONObject schema) throws IOException {
         if(!databaseExists(databaseName)){
@@ -46,7 +44,7 @@ public class DiskOperations {
         File databaseDirectory=new File(collectionDirectoryPath(databaseName,collectionName));
         FileUtils.deleteDirectory(databaseDirectory);
     }
-    public static JSONObject createDocument(String databaseName,String collectionName,JSONObject document) throws IOException, ParseException {
+    public static JSONObject createDocument(String databaseName,String collectionName,JSONObject document) throws IOException {
         if(!databaseExists(databaseName)){
             throw new IllegalArgumentException();
         }
@@ -74,8 +72,7 @@ public class DiskOperations {
         channel.write(buff,index-1);
         channel.close();
         readerWriter.close();
-        JSONObject indexObject=indexObject(start,end,document.get("id").toString());
-        return indexObject;
+        return indexObject(start,end,document.get("id").toString());
     }
     public static JSONObject readDocument(String databaseName,String collectionName,JSONObject indexObject) throws IOException, ParseException {
         RandomAccessFile reader = new RandomAccessFile(collectionPath(databaseName,collectionName), "r");

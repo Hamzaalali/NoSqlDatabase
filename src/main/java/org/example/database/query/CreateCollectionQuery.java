@@ -14,14 +14,17 @@ public class CreateCollectionQuery extends DatabaseQuery {
     public ClientMessage execute(JSONObject query) {
         ClientMessage clientMessage=new ClientMessage();
         try {
+            Optional<Database> database=indexManager.getDatabase(databaseName);
+            database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
             DocumentSchema.verifyJsonTypes(schema);
             DiskOperations.createCollection(databaseName,collectionName,schema);
-            Optional<Database> database=indexManager.getDatabase(databaseName);
             database.orElseThrow(NoDatabaseFoundException::new).createCollection(collectionName);
+            database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().unlock();
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());
         }
+
         return clientMessage;
     }
 }

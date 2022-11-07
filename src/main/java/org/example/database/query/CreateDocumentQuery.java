@@ -18,14 +18,16 @@ public class CreateDocumentQuery extends DatabaseQuery {
     public ClientMessage execute(JSONObject query) {
         ClientMessage clientMessage=new ClientMessage();
         try {
+            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
             documentSchema.verify(document);
             UUID uuid = UUID.randomUUID();
             document.put("id",uuid.toString());
             JSONObject indexObject= DiskOperations.createDocument(databaseName,collectionName,document);//write it to disk and retrieve the object that contains the location of this document on disk
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
             collection.orElseThrow(NoCollectionFoundException::new).addDocumentToIndexes(document,indexObject);//add this document to all indexes
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());

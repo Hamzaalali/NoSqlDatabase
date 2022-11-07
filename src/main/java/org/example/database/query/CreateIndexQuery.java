@@ -24,12 +24,14 @@ public class CreateIndexQuery extends DatabaseQuery {
     public ClientMessage execute(JSONObject query) {
         ClientMessage clientMessage=new ClientMessage();
         try {
+            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
+
             Optional<JSONObject> propertyJson=getIndexProperty(databaseName,collectionName,indexPropertyObject);
             String property= (String) propertyJson.orElseThrow(InvalidIndexPropertyObject::new).get("key");
             DocumentDataTypes propertyDataType= (DocumentDataTypes) propertyJson.get().get("documentDataTypes");
             Index index=getIndexFromDataType(propertyDataType);
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
             List<JSONObject> indexesList=collection.orElseThrow(NoCollectionFoundException::new).findAll();
             JSONArray collectionArray=DiskOperations.readCollection(databaseName,collectionName,indexesList);
             index.setIndexPropertyObject(indexPropertyObject);
@@ -39,6 +41,8 @@ public class CreateIndexQuery extends DatabaseQuery {
                 Object value= JsonUtils.searchForValue(jsonObject,indexPropertyObject);
                 collection.get().addToIndex( property,value, (String) jsonObject.get("id"));
             }
+            database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().unlock();
+
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());

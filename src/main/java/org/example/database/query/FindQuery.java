@@ -26,6 +26,7 @@ public class FindQuery extends DatabaseQuery {
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             collection.orElseThrow(NoCollectionFoundException::new);
             DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
             Optional<JSONObject> propertyJson=documentSchema.getLeafProperty(searchObject);
@@ -47,6 +48,7 @@ public class FindQuery extends DatabaseQuery {
                 }
             }
             clientMessage.setDataArray(jsonArray);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());

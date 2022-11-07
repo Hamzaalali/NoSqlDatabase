@@ -16,8 +16,10 @@ public class FindAllQuery extends DatabaseQuery {
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             List<JSONObject>indexesList=collection.orElseThrow(NoCollectionFoundException::new).findAll();//get all indexes that exist in the id index ( to exclude the soft deleted documents)
             clientMessage.setDataArray(DiskOperations.readCollection(databaseName,collectionName,indexesList));//read from the disk
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());

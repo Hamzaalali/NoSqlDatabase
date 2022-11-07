@@ -24,6 +24,7 @@ public class UpdateDocumentQuery extends DatabaseQuery{
         try{
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             Optional<JSONObject> indexObject=collection.orElseThrow(NoCollectionFoundException::new).getIndex(documentId);
             JSONObject document= DiskOperations.readDocument(databaseName,collectionName,indexObject.orElseThrow(NoDocumentFoundException::new));
             collection.get().deleteDocument(document);
@@ -31,6 +32,7 @@ public class UpdateDocumentQuery extends DatabaseQuery{
             JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
             collection.get().addDocumentToIndexes(document,newIndexObject);
             clientMessage.setData(document);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());

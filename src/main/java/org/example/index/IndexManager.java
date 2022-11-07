@@ -7,12 +7,16 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class IndexManager implements Serializable {
     private static volatile IndexManager instance;
     private Map<String, Database> databases;
+    private ReentrantLock databaseLock;
     private IndexManager() {
         databases=new HashMap<>();
+        databaseLock=new ReentrantLock();
     }
     public static IndexManager getInstance() {
 
@@ -39,5 +43,8 @@ public class IndexManager implements Serializable {
     }
     public void deleteDatabase(String databaseName){
         databases.remove(databaseName);
+    }
+    public ReentrantLock getDatabaseLock(){
+        return databaseLock;
     }
 }

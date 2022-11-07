@@ -12,14 +12,15 @@ public class CreateDatabaseQuery extends DatabaseQuery {
     @Override
     public ClientMessage execute(JSONObject query) {
         ClientMessage clientMessage=new ClientMessage();
+        indexManager.getDatabaseLock().lock();
         try{
-            IndexManager indexManager=IndexManager.getInstance();
             DiskOperations.createDatabase(databaseName);
             indexManager.addDatabase(databaseName);
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());
         }
+        indexManager.getDatabaseLock().unlock();
         return clientMessage;
     }
 }

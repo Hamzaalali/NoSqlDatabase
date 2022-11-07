@@ -1,8 +1,6 @@
 
 m
 =src/main/java/org/example/index/BPlusTree/BTreeInnerNode.java,6\1\6190d1afce5d86bd128f264f22cc8b15a19ef865
-f
-6src/main/java/org/example/index/types/StringIndex.java,a\d\adac25b7655b438a64076865e1ca894f9d19dee0
 s
 Csrc/main/java/org/example/authentication/AuthenticationManager.java,7\1\715f9ab9a5347ade5682d54285d9c22aea832fc5
 u
@@ -13,8 +11,6 @@ g
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 d
 4src/main/java/org/example/index/BPlusTree/BTree.java,c\2\c287cd9425de9d0c4ec522ea34d2745886f1b95b
-}
-Msrc/main/java/org/example/database/collection/document/DocumentDataTypes.java,7\e\7edf5500fdf728304a24228114dd584f117ab0df
 `
 0src/main/java/org/example/index/types/Index.java,0\6\06d6ca0f80e2893e6c4fa5aaf67b75e3ac893296
 ]

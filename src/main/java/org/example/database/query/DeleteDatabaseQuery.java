@@ -14,7 +14,7 @@ public class DeleteDatabaseQuery extends DatabaseQuery{
     @Override
     public ClientMessage execute(JSONObject query) {
         ClientMessage clientMessage=new ClientMessage();
-
+        indexManager.getDatabaseLock().lock();
         try{
             Optional<Database> database=indexManager.getDatabase(databaseName);
             database.orElseThrow(NoDatabaseFoundException::new);
@@ -24,6 +24,7 @@ public class DeleteDatabaseQuery extends DatabaseQuery{
             clientMessage.setCodeNumber(1);
             clientMessage.setErrorMessage(e.getMessage());
         }
+        indexManager.getDatabaseLock().lock();
         return clientMessage;
     }
 }

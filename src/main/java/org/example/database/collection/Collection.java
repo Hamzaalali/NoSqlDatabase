@@ -5,17 +5,24 @@ import org.example.json.JsonUtils;
 import org.json.simple.JSONObject;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Collection {
     private Map<String , JSONObject>idIndex;//this json object should contain information about where the document is in the collection file
     private Map<String,Index>indexes;
+    private ReentrantLock documentLock;
     public Collection(){
         indexes=new HashMap<>();
         idIndex=new HashMap<>();
+        documentLock=new ReentrantLock();
     }
 
     public void addIndex(String property,Index index){
         indexes.put(property,index);
+    }
+    public ReentrantLock getDocumentLock(){
+        return documentLock;
     }
     public void addToIndex(String property,Object key,String id){
         List<String> indexValue= (List<String>) indexes.get(property).getIndex().search((Comparable) key);
@@ -53,9 +60,7 @@ public class Collection {
         return new ArrayList<>(idIndex.values());
     }
 
-    public void deleteFromIndex(String property,Object key ){
-        indexes.get(property).getIndex().delete((Comparable) key);
-    }
+
     private void removeFromAllIndexes(JSONObject document){
         for(Index index:indexes.values()){
             JSONObject indexPropertyJson=index.getIndexPropertyObject();
