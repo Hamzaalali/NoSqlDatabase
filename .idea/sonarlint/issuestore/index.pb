@@ -1,16 +1,12 @@
 
 m
 =src/main/java/org/example/index/BPlusTree/BTreeInnerNode.java,6\1\6190d1afce5d86bd128f264f22cc8b15a19ef865
-`
-0src/main/java/org/example/database/Database.java,0\1\0173e8186dbd4c22ae91b738cf945567e0da0d61
 f
 6src/main/java/org/example/index/types/StringIndex.java,a\d\adac25b7655b438a64076865e1ca894f9d19dee0
 s
 Csrc/main/java/org/example/authentication/AuthenticationManager.java,7\1\715f9ab9a5347ade5682d54285d9c22aea832fc5
 u
 Esrc/main/java/org/example/server_client/ServerClientCommunicator.java,b\4\b43b4222a489649fb4090b492fa260c77b3ed9d1
-f
-6src/main/java/org/example/database/DatabaseFacade.java,5\1\51c8fe9f62688afcd9d038a74ad8eb3604ee45d9
 g
 7src/main/java/org/example/index/types/IndexFactory.java,6\b\6b5351b2f1817af9eefa8d797fb316f53b7ac150
 z
@@ -21,3 +17,9 @@ a
 1src/main/java/org/example/index/IndexManager.java,9\1\91509181cbeeb7034fe1bc0d81ebea0ba2b25460
 d
 4src/main/java/org/example/index/BPlusTree/BTree.java,c\2\c287cd9425de9d0c4ec522ea34d2745886f1b95b
+}
+Msrc/main/java/org/example/database/collection/document/DocumentDataTypes.java,7\e\7edf5500fdf728304a24228114dd584f117ab0df
+`
+0src/main/java/org/example/index/types/Index.java,0\6\06d6ca0f80e2893e6c4fa5aaf67b75e3ac893296
+]
+-src/main/java/org/example/json/JsonUtils.java,5\5\551a81d27e51678353f19e4ec3016a12bd610f5d

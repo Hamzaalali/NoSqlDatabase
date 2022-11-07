@@ -2,7 +2,10 @@ package org.example.database.query;
 
 import org.example.database.Database;
 import org.example.database.collection.Collection;
+import org.example.exception.NoCollectionFoundException;
+import org.example.exception.NoDatabaseFoundException;
 import org.example.file.system.DiskOperations;
+import org.example.server_client.ClientMessage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -11,18 +14,25 @@ import java.util.List;
 
 public class FindAllQuery extends DatabaseQuery {
     @Override
-    public void execute(JSONObject query) {
+    public ClientMessage execute(JSONObject query) {
+        ClientMessage clientMessage=new ClientMessage();
         try {
             String databaseName= (String) query.get("databaseName");
             String collectionName= (String) query.get("collectionName");
             Database database=indexManager.getDatabases().get(databaseName);
+            if(database==null){
+                throw new NoDatabaseFoundException();
+            }
             Collection collection=database.getCollections().get(collectionName);
+            if(collection==null){
+                throw new NoCollectionFoundException();
+            }
             List<JSONObject>indexesList=collection.findAll();//get all indexes that exist in the id index ( to exclude the soft deleted documents)
-            System.out.println(DiskOperations.readCollection(databaseName,collectionName,indexesList));//read from the disk
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+            clientMessage.setDataArray(DiskOperations.readCollection(databaseName,collectionName,indexesList));//read from the disk
+        } catch (Exception e) {
+            clientMessage.setCodeNumber(1);
+            clientMessage.setErrorMessage(e.getMessage());
         }
+        return clientMessage;
     }
 }

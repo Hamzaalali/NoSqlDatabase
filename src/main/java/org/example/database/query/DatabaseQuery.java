@@ -1,6 +1,7 @@
 package org.example.database.query;
 
 import org.example.index.IndexManager;
+import org.example.server_client.ClientMessage;
 import org.json.simple.JSONObject;
 
 public abstract class DatabaseQuery {
@@ -8,6 +9,6 @@ public abstract class DatabaseQuery {
     public DatabaseQuery(){
         indexManager=IndexManager.getInstance();
     }
-    public abstract void execute(JSONObject query);
+    public abstract ClientMessage execute(JSONObject query);
 
 }

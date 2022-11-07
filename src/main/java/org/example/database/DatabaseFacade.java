@@ -2,6 +2,7 @@ package org.example.database;
 
 import org.example.database.query.DatabaseQuery;
 import org.example.database.query.factory.DatabaseQueryFactory;
+import org.example.server_client.ClientMessage;
 import org.example.server_client.QueryType;
 import org.json.simple.JSONObject;
 
@@ -14,9 +15,9 @@ public class DatabaseFacade {
         DatabaseQueryFactory databaseQueryFactory=new DatabaseQueryFactory();
         databaseQueryMap=databaseQueryFactory.databaseQueryMap();
     }
-    public void execute(JSONObject query) {
+    public ClientMessage execute(JSONObject query) {
         QueryType queryType= QueryType.valueOf((String) query.get("queryType"));
         DatabaseQuery databaseQuery=databaseQueryMap.get(queryType);
-        databaseQuery.execute(query);
+        return databaseQuery.execute(query);
     }
 }

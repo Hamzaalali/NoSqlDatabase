@@ -2,6 +2,7 @@ package org.example.server;
 
 import org.example.authentication.AuthenticationManager;
 import org.example.database.DatabaseFacade;
+import org.example.server_client.ClientMessage;
 import org.example.server_client.ServerClientCommunicator;
 import org.json.simple.JSONObject;
 
@@ -40,10 +41,12 @@ public class Server {
         @Override
         public void run() {
             while(true){
+                ClientMessage clientMessage;
                 try {
                     JSONObject query=(JSONObject) ServerClientCommunicator.readObj(socket);
                     System.out.println(query);
-                    databaseFacade.execute(query);
+                    clientMessage=databaseFacade.execute(query);
+                    ServerClientCommunicator.sendObject(socket,clientMessage);
                 } catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }

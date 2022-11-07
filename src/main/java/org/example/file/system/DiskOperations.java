@@ -2,6 +2,7 @@ package org.example.file.system;
 
 import org.apache.commons.io.FileUtils;
 import org.example.database.collection.document.DocumentSchema;
+import org.example.exception.DatabaseExistsException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,9 +19,9 @@ import java.util.List;
 
 public class DiskOperations {
     private static final String storageDirectoryPath="storage";
-    public static void createDatabase(String databaseName) throws IOException {
+    public static void createDatabase(String databaseName) throws IOException, DatabaseExistsException {
         if(databaseExists(databaseName)){
-            throw new IllegalArgumentException();
+            throw new DatabaseExistsException();
         }
         String dataBaseDirectoryPath= createDirectoryIfNotFound(databasePath(databaseName));
     }
