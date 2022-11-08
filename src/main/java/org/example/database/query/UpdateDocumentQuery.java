@@ -14,35 +14,22 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class UpdateDocumentQuery extends DatabaseQuery{
 
     @Override
     public ClientMessage execute(JSONObject query) {
         ClientMessage clientMessage=new ClientMessage();
-
         try{
-            String databaseName= (String) query.get("databaseName");
-            String collectionName= (String) query.get("collectionName");
-            JSONObject data=(JSONObject) query.get("data");
-            String documentId=(String) query.get("documentId");
-            Database database=indexManager.getDatabases().get(databaseName);
-            if(database==null){
-                throw new NoDatabaseFoundException();
-            }
-            Collection collection=database.getCollections().get(collectionName);
-            if(collection==null){
-                throw new NoCollectionFoundException();
-            }
-            JSONObject indexObject=collection.getIndex(documentId);
-            if(indexObject==null){
-                throw new NoDocumentFoundException();
-            }
-            JSONObject document= DiskOperations.readDocument(databaseName,collectionName,indexObject);
-            collection.deleteDocument(document);
+            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            Optional<JSONObject> indexObject=collection.orElseThrow(NoCollectionFoundException::new).getIndex(documentId);
+            JSONObject document= DiskOperations.readDocument(databaseName,collectionName,indexObject.orElseThrow(NoDocumentFoundException::new));
+            collection.get().deleteDocument(document);
             JsonUtils.updateJsonObject(document,data);
-            indexObject=DiskOperations.createDocument(databaseName,collectionName,document);
-            collection.addDocumentToIndexes(document,indexObject);
+            JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
+            collection.get().addDocumentToIndexes(document,newIndexObject);
             clientMessage.setData(document);
         } catch (Exception e) {
             clientMessage.setCodeNumber(1);

@@ -1,10 +1,13 @@
 package org.example.index;
 
 import org.example.database.Database;
+import org.example.exception.NoCollectionFoundException;
 import org.json.simple.JSONObject;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
 public class IndexManager implements Serializable {
     private static volatile IndexManager instance;
     private Map<String, Database> databases;
@@ -28,11 +31,11 @@ public class IndexManager implements Serializable {
         Database database=new Database();
         databases.put(databaseName,database);
     }
-    public Map<String, Database> getDatabases() {
-        return databases;
+    public Optional<Database> getDatabase(String databaseName){
+        return Optional.ofNullable(databases.get(databaseName));
     }
-    public JSONObject getDocumentIndex(String databaseName,String collectionName,String id){
-        return  databases.get(databaseName).getCollections().get(collectionName).getIndex(id);
+    public Optional<JSONObject> getDocumentIndex(String databaseName, String collectionName, String id) throws NoCollectionFoundException {
+        return  databases.get(databaseName).getCollection(collectionName).orElseThrow(NoCollectionFoundException::new).getIndex(id);
     }
     public void deleteDatabase(String databaseName){
         databases.remove(databaseName);

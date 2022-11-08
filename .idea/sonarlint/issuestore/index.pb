@@ -9,12 +9,8 @@ u
 Esrc/main/java/org/example/server_client/ServerClientCommunicator.java,b\4\b43b4222a489649fb4090b492fa260c77b3ed9d1
 g
 7src/main/java/org/example/index/types/IndexFactory.java,6\b\6b5351b2f1817af9eefa8d797fb316f53b7ac150
-z
-Jsrc/main/java/org/example/database/query/factory/DatabaseQueryFactory.java,a\1\a10d3359483267836010c719edc0f8032b84547b
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-a
-1src/main/java/org/example/index/IndexManager.java,9\1\91509181cbeeb7034fe1bc0d81ebea0ba2b25460
 d
 4src/main/java/org/example/index/BPlusTree/BTree.java,c\2\c287cd9425de9d0c4ec522ea34d2745886f1b95b
 }
@@ -23,3 +19,9 @@ Msrc/main/java/org/example/database/collection/document/DocumentDataTypes.java,
 0src/main/java/org/example/index/types/Index.java,0\6\06d6ca0f80e2893e6c4fa5aaf67b75e3ac893296
 ]
 -src/main/java/org/example/json/JsonUtils.java,5\5\551a81d27e51678353f19e4ec3016a12bd610f5d
+p
+@src/main/java/org/example/exception/DatabaseExistsException.java,4\8\488f70b36d53200476a1573dbc7cc8f45ebf3c35
+s
+Csrc/main/java/org/example/exception/NoCollectionFoundException.java,b\4\b4453419c763ba8c5dcdfd512a1127766e8e1960
+u
+Esrc/main/java/org/example/exception/InvalidSearchObjectException.java,c\1\c18244c3ae31b1dd481c947af3ad19177ba94f85

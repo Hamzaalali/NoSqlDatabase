@@ -70,9 +70,9 @@ public class DocumentSchema {
         }
         throw new IllegalArgumentException();
     }
-    public JSONObject getLeafProperty(JSONObject searchObject){
+    public Optional<JSONObject> getLeafProperty(JSONObject searchObject){
         StringBuilder keyHierarchy=new StringBuilder();
-        return searchForLeafProperty(searchObject,schema,keyHierarchy);
+        return Optional.ofNullable(searchForLeafProperty(searchObject, schema, keyHierarchy));
     }
     private JSONObject searchForLeafProperty(JSONObject searchObject,JSONObject schemaObject,StringBuilder keyHierarchy){
         for (Object key : schemaObject.keySet()) {

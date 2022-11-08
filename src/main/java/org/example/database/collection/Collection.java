@@ -27,8 +27,8 @@ public class Collection {
             indexes.get(property).getIndex().insert((Comparable) key,valueList);
         }
     }
-    public JSONObject getIndex( String id){
-        return idIndex.get(id);
+    public Optional<JSONObject> getIndex( String id){
+        return Optional.ofNullable(idIndex.get(id));
     }
     public void addDocumentToIndexes(JSONObject document,JSONObject indexObject){
         idIndex.put((String)indexObject.get("id"),indexObject);//add to id index
@@ -37,10 +37,10 @@ public class Collection {
             addToIndex( property,value, (String) document.get("id"));
         }
     }
-    public List<String> searchForIndex(String property,Object value){
+    public Optional<List<String>> searchForIndex(String property,Object value){
         Index index=indexes.get(property);
         System.out.println();
-        return (List<String>) index.getIndex().search((Comparable) value);
+        return (Optional<List<String>>) index.getIndex().search((Comparable) value);
     }
     public boolean hasIndex(String property){
         return (indexes.containsKey(property));

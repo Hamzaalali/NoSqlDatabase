@@ -17,6 +17,7 @@ public class DatabaseFacade {
     }
     public ClientMessage execute(JSONObject query) {
         QueryType queryType= QueryType.valueOf((String) query.get("queryType"));
+        databaseQueryMap.get(queryType).setQuery(query);
         DatabaseQuery databaseQuery=databaseQueryMap.get(queryType);
         return databaseQuery.execute(query);
     }

@@ -17,44 +17,33 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class FindQuery extends DatabaseQuery {
     ClientMessage clientMessage=new ClientMessage();
     @Override
     public ClientMessage execute(JSONObject query) {
         try {
-            String databaseName= (String) query.get("databaseName");
-            String collectionName= (String) query.get("collectionName");
-            JSONObject searchObject=(JSONObject) query.get("searchObject");
-
-            Database database=indexManager.getDatabases().get(databaseName);
-            if(database==null){
-                throw new NoDatabaseFoundException();
-            }
-            Collection collection=database.getCollections().get(collectionName);
-            if(collection==null){
-                throw new NoCollectionFoundException();
-            }
-
+            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            collection.orElseThrow(NoCollectionFoundException::new);
             DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
-            JSONObject propertyJson=documentSchema.getLeafProperty(searchObject);
-            if(propertyJson==null){
-                throw new InvalidSearchObjectException();
-            }
-            String property= (String) propertyJson.get("key");
-            Object value=  propertyJson.get("value");
+            Optional<JSONObject> propertyJson=documentSchema.getLeafProperty(searchObject);
+            propertyJson.orElseThrow(InvalidSearchObjectException::new);
+            String property= (String) propertyJson.get().get("key");
+            Object value=  propertyJson.get().get("value");
             JSONArray jsonArray=new JSONArray();
             if(Objects.equals(property, "id")){
-                JSONObject indexObject=collection.getIndex((String) value);
-                if(indexObject!=null){
-                    JSONObject document = DiskOperations.readDocument(databaseName,collectionName,indexObject);
+                Optional<JSONObject> indexObject=collection.get().getIndex((String) value);
+                if(indexObject.isPresent()){
+                    JSONObject document = DiskOperations.readDocument(databaseName,collectionName,indexObject.get());
                     jsonArray.add(document);
                 }
             }else{
-                if(collection.hasIndex(property)){
-                    jsonArray.add(indexSearch(databaseName,collectionName,property,value,collection));
+                if(collection.get().hasIndex(property)){
+                    jsonArray.add(indexSearch(databaseName,collectionName,property,value,collection.get()));
                 }else{
-                    jsonArray.add(fullSearch(databaseName,collectionName,collection,searchObject,value));
+                    jsonArray.add(fullSearch(databaseName,collectionName,collection.get(),searchObject,value));
                 }
             }
             clientMessage.setDataArray(jsonArray);
@@ -65,17 +54,19 @@ public class FindQuery extends DatabaseQuery {
         return clientMessage;
     }
 
-    private JSONArray indexSearch(String databaseName,String collectionName,String property,Object value,Collection collection) throws IOException, ParseException {
-        List<String> idsList=collection.searchForIndex(property,value);
+    private JSONArray indexSearch(String databaseName,String collectionName,String property,Object value,Collection collection) throws IOException, ParseException, NoCollectionFoundException {
+        Optional<List<String>> idsList=collection.searchForIndex(property,value);
         JSONArray jsonArray=new JSONArray();
-        if(idsList==null){
+        if(idsList.isEmpty()){
             return jsonArray;
         }
-        for(int i=0;i<idsList.size();i++){
-            String id=idsList.get(i);
-            JSONObject indexObject=indexManager.getDocumentIndex(databaseName,collectionName,id);
-            JSONObject document =DiskOperations.readDocument(databaseName,collectionName,indexObject);
-            jsonArray.add(document);
+        for(int i=0;i<idsList.get().size();i++){
+            String id=idsList.get().get(i);
+            Optional<JSONObject> indexObject=indexManager.getDocumentIndex(databaseName,collectionName,id);
+            if(indexObject.isPresent()){
+                JSONObject document =DiskOperations.readDocument(databaseName,collectionName,indexObject.get());
+                jsonArray.add(document);
+            }
         }
         return jsonArray;
     }

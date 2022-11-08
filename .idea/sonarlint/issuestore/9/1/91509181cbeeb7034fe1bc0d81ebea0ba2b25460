@@ -1,8 +1,0 @@
-
-A
-java:S1948"+Make "databases" transient or serializable.(«ù²
-r
-java:S3077
-"WUse a thread-safe type; adding "volatile" is not enough to make this field thread-safe.(¢é”Åøÿÿÿÿ
-Y
-java:S1128"<Remove this unused import 'org.example.server_client.Query'.(è½ı8ê£ßÄ0

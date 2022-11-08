@@ -1,12 +1,14 @@
 package org.example.database.query;
 
 import org.example.database.Database;
+import org.example.database.collection.Collection;
 import org.example.exception.NoDatabaseFoundException;
 import org.example.file.system.DiskOperations;
 import org.example.server_client.ClientMessage;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class DeleteDatabaseQuery extends DatabaseQuery{
     @Override
@@ -14,11 +16,8 @@ public class DeleteDatabaseQuery extends DatabaseQuery{
         ClientMessage clientMessage=new ClientMessage();
 
         try{
-            String databaseName= (String) query.get("databaseName");
-            Database database=indexManager.getDatabases().get(databaseName);
-            if(database==null){
-                throw new NoDatabaseFoundException();
-            }
+            Optional<Database> database=indexManager.getDatabase(databaseName);
+            database.orElseThrow(NoDatabaseFoundException::new);
             DiskOperations.deleteDatabase(databaseName);//hard delete
             indexManager.deleteDatabase(databaseName);//delete from the index structure
         } catch (Exception e) {
