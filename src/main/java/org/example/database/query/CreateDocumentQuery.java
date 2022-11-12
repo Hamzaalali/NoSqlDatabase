@@ -5,18 +5,17 @@ import org.example.database.collection.document.DocumentSchema;
 import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
 import org.example.file.system.DiskOperations;
-import org.example.server_client.ClientMessage;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
 public class CreateDocumentQuery extends DatabaseQuery {
     @Override
-    public ClientMessage execute(JSONObject query) {
-        ClientMessage clientMessage=new ClientMessage();
+    public JSONObject execute(JSONObject query) {
+        JSONObject clientMessage=new JSONObject();
+        clientMessage.put("code_number",0);
+
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
@@ -29,8 +28,9 @@ public class CreateDocumentQuery extends DatabaseQuery {
             collection.orElseThrow(NoCollectionFoundException::new).addDocumentToIndexes(document,indexObject);//add this document to all indexes
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
-            clientMessage.setCodeNumber(1);
-            clientMessage.setErrorMessage(e.getMessage());
+
+            clientMessage.put("code_number",1);
+            clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
     }

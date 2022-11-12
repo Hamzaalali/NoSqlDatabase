@@ -1,20 +1,18 @@
 package org.example.database.query;
 
 import org.example.database.Database;
-import org.example.database.collection.Collection;
-import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
 import org.example.file.system.DiskOperations;
-import org.example.server_client.ClientMessage;
 import org.json.simple.JSONObject;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class DeleteCollectionQuery extends DatabaseQuery{
     @Override
-    public ClientMessage execute(JSONObject query) {
-        ClientMessage clientMessage=new ClientMessage();
+    public JSONObject execute(JSONObject query) {
+        JSONObject clientMessage=new JSONObject();
+        clientMessage.put("code_number",0);
+
         try{
             Optional<Database> database=indexManager.getDatabase(databaseName);
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
@@ -22,8 +20,8 @@ public class DeleteCollectionQuery extends DatabaseQuery{
             database.orElseThrow(NoDatabaseFoundException::new).deleteCollection(collectionName);//delete from the index structure
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().unlock();
         } catch (Exception e) {
-            clientMessage.setCodeNumber(1);
-            clientMessage.setErrorMessage(e.getMessage());
+            clientMessage.put("code_number",1);
+            clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
     }

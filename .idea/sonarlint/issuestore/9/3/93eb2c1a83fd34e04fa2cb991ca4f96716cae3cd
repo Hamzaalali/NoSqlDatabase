@@ -1,0 +1,8 @@
+
+J
+java:S2864*"4Iterate over the "entrySet" instead of the "keySet".(­Óý
+S	java:S1061"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+Y
+java:S1155F">Use isEmpty() to check whether the collection is empty or not.(¤ê†Ýüÿÿÿÿ
+j
+java:S1128	"NRemove this unused import 'java.util.concurrent.locks.ReentrantReadWriteLock'.(¢×¿8Ê±—˜Å0

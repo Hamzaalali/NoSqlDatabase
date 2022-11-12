@@ -1,5 +1,10 @@
 package org.example.server_client;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -32,7 +37,25 @@ public class ServerClientCommunicator {
         printWriter.println(message);
         printWriter.flush();
     }
+    public static void sendJson(Socket socket,JSONObject jsonObject) throws IOException {
+        sendMessage(socket,jsonObject.toJSONString());
+    }
+    public static void sendJsonArray(Socket socket,JSONArray jsonArray) throws IOException {
+        sendMessage(socket,jsonArray.toJSONString());
+    }
+    public static JSONArray readJsonArray(Socket socket) throws IOException, ClassNotFoundException, ParseException {
+        String jsonString=(String) readObj(socket);
+        JSONParser jsonParser=new JSONParser();
+        JSONArray jsonArray= (JSONArray) jsonParser.parse(jsonString);
+        return jsonArray;
 
+    }
+    public static JSONObject readJson(Socket socket) throws IOException, ParseException {
+        String jsonString= readString(socket);
+        JSONParser jsonParser=new JSONParser();
+        JSONObject json= (JSONObject) jsonParser.parse(jsonString);
+        return json;
+    }
     private static BufferedReader getBufferReader(Socket socket) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

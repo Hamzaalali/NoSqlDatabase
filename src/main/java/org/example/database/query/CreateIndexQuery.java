@@ -11,7 +11,6 @@ import org.example.file.system.DiskOperations;
 import org.example.index.types.Index;
 import org.example.index.types.IndexFactory;
 import org.example.json.JsonUtils;
-import org.example.server_client.ClientMessage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -21,8 +20,10 @@ import java.util.Optional;
 
 public class CreateIndexQuery extends DatabaseQuery {
     @Override
-    public ClientMessage execute(JSONObject query) {
-        ClientMessage clientMessage=new ClientMessage();
+    public JSONObject execute(JSONObject query) {
+        JSONObject clientMessage=new JSONObject();
+        clientMessage.put("code_number",0);
+
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
@@ -44,8 +45,8 @@ public class CreateIndexQuery extends DatabaseQuery {
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().unlock();
 
         } catch (Exception e) {
-            clientMessage.setCodeNumber(1);
-            clientMessage.setErrorMessage(e.getMessage());
+            clientMessage.put("code_number",1);
+            clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
     }

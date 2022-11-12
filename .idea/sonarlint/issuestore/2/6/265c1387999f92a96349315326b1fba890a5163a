@@ -1,0 +1,9 @@
+
+z
+java:S14887"dImmediately return this expression instead of assigning it to the temporary variable "propertyJson".(è´±Ý
+s
+java:S1488<"]Immediately return this expression instead of assigning it to the temporary variable "index".(¼¬§ó
+o
+java:S3655'"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(ïð˜¸þÿÿÿÿ
+z
+java:S3655""XCall "propertyJson.isPresent()" or "!propertyJson.isEmpty()" before accessing the value.(ûÖêÂüÿÿÿÿ8Ó£‹§Å0

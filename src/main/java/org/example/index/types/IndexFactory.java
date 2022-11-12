@@ -12,7 +12,7 @@ public class IndexFactory {
     }
 
     public Map<DocumentDataTypes, Index> getIndexMap() {
-        indexMap.put(DocumentDataTypes.INTEGER,new IntegerIndex());
+        indexMap.put(DocumentDataTypes.LONG,new LongIndex());
         indexMap.put(DocumentDataTypes.STRING,new StringIndex());
         return indexMap;
     }

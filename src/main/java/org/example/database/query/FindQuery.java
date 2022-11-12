@@ -6,10 +6,8 @@ import org.example.database.collection.document.DocumentSchema;
 import org.example.exception.InvalidSearchObjectException;
 import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
-import org.example.exception.NoDocumentFoundException;
 import org.example.file.system.DiskOperations;
 import org.example.json.JsonUtils;
-import org.example.server_client.ClientMessage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -20,9 +18,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class FindQuery extends DatabaseQuery {
-    ClientMessage clientMessage=new ClientMessage();
+
     @Override
-    public ClientMessage execute(JSONObject query) {
+    public JSONObject execute(JSONObject query) {
+        JSONObject clientMessage=new JSONObject();
+        clientMessage.put("code_number",0);
+
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
@@ -47,11 +48,11 @@ public class FindQuery extends DatabaseQuery {
                     jsonArray.add(fullSearch(databaseName,collectionName,collection.get(),searchObject,value));
                 }
             }
-            clientMessage.setDataArray(jsonArray);
+            clientMessage.put("data",jsonArray);
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
-            clientMessage.setCodeNumber(1);
-            clientMessage.setErrorMessage(e.getMessage());
+            clientMessage.put("code_number",1);
+            clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
     }
