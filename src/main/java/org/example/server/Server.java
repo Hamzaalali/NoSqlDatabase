@@ -31,8 +31,9 @@ public class Server implements Runnable{
 //            NodeToNodeReceiver nodeToNodeReceiver=new NodeToNodeReceiver();
 //            new Thread(nodeToNodeReceiver).start();
             NodeToNodeSenderReceiver nodeToNodeSenderReceiver =new NodeToNodeSenderReceiver();
-            DatagramPacket packet=nodeToNodeSenderReceiver.receiveMessage();
-            nodeToNodeSenderReceiver.sendMessage("i\'m up",packet.getAddress(), packet.getPort());
+            DatagramPacket packet;
+//            DatagramPacket packet=nodeToNodeSenderReceiver.receiveMessage();
+            nodeToNodeSenderReceiver.sendMessage(System.getenv("BOOTSTRAPPER_PORT"));
             JSONParser jsonParser=new JSONParser();
             packet =nodeToNodeSenderReceiver.receiveMessage();
             JSONArray jsonArray= (JSONArray) jsonParser.parse(new String(packet.getData(), 0, packet.getLength()));

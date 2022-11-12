@@ -11,15 +11,15 @@ public class NodeToNodeSenderReceiver {
 
     public NodeToNodeSenderReceiver() throws SocketException, UnknownHostException {
         socket = new DatagramSocket(4000);
-//        address = InetAddress.getByName("host.docker.internal");
+        address = InetAddress.getByName("host.docker.internal");
         System.out.println( System.getenv("GATEWAY_IP"));
-        address=InetAddress.getByName(System.getenv("GATEWAY_IP"));
+//        address=InetAddress.getByName(System.getenv("GATEWAY_IP"));
     }
 
-    public void sendMessage(String msg,InetAddress address,int port) throws IOException {
+    public void sendMessage(String msg) throws IOException {
         buf = msg.getBytes();
         DatagramPacket packet
-                = new DatagramPacket(buf, buf.length, address, port);
+                = new DatagramPacket(buf, buf.length, address, Integer.parseInt(System.getenv("BOOTSTRAPPER_PORT")));
         socket.send(packet);
     }
     public DatagramPacket receiveMessage() throws IOException {
