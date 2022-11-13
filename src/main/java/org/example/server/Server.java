@@ -1,16 +1,14 @@
 package org.example.server;
 
 import org.example.authentication.AuthenticationManager;
-import org.example.node.to.node.NodeToNodeReceiver;
 import org.example.node.to.node.NodeToNodeSenderReceiver;
 import org.example.database.DatabaseFacade;
 
 import org.example.server_client.ServerClientCommunicator;
+import org.example.udp.UdpRoutineTypes;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.net.*;
 
@@ -24,16 +22,22 @@ public class Server implements Runnable{
     @Override
     public void run() {
         initialize();
-        listenForConnection();
+        new Thread(new TcpListener()).start();
+        try{
+            System.out.println("udp listener start");
+            new Thread(new UdpListener()).start();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            new RuntimeException(e);
+        }
     }
     private void initialize(){
         try{
-//            NodeToNodeReceiver nodeToNodeReceiver=new NodeToNodeReceiver();
-//            new Thread(nodeToNodeReceiver).start();
             NodeToNodeSenderReceiver nodeToNodeSenderReceiver =new NodeToNodeSenderReceiver();
             DatagramPacket packet;
-//            DatagramPacket packet=nodeToNodeSenderReceiver.receiveMessage();
-            nodeToNodeSenderReceiver.sendMessage(System.getenv("BOOTSTRAPPER_PORT"));
+            JSONObject routine=new JSONObject();
+            routine.put("routineType", UdpRoutineTypes.INIT.toString());
+            nodeToNodeSenderReceiver.sendMessage(routine.toJSONString());
             JSONParser jsonParser=new JSONParser();
             packet =nodeToNodeSenderReceiver.receiveMessage();
             JSONArray jsonArray= (JSONArray) jsonParser.parse(new String(packet.getData(), 0, packet.getLength()));
@@ -45,63 +49,41 @@ public class Server implements Runnable{
             throw new RuntimeException(e);
         }
     }
-    private void listenForConnection(){
-        System.out.println("wt");
-        try {
-            ServerSocket serverSocket = new ServerSocket(3000);
-            while (true) {
-                System.out.println("wt");
-                Socket socket = serverSocket.accept();
-                System.out.println("New Connection At Port : "+socket.getPort());
-                new Thread(new ServerConnection(socket)).start();
-            }
-        } catch (IOException e) {
 
+    private class TcpListener implements Runnable{
+        @Override
+        public void run() {
+            try {
+                ServerSocket serverSocket = new ServerSocket(3000);
+                while (true) {
+                    System.out.println("wt");
+                    Socket socket = serverSocket.accept();
+                    System.out.println("New Connection At Port : "+socket.getPort());
+                    new Thread(new ServerConnection(socket,databaseFacade)).start();
+                }
+            } catch (IOException e) {
+
+            }
         }
     }
-    public class ServerConnection implements Runnable{
-        private Socket socket;
-        public ServerConnection(Socket socket) throws IOException {
-            this.socket = socket;
+    private class UdpListener implements Runnable{
+        private DatagramSocket udpSocket;
+        private byte[] buf = new byte[1024];
+        public UdpListener() throws SocketException {
+            udpSocket = new DatagramSocket(4000);
         }
         @Override
         public void run() {
-           authenticate();
-           getUserQueries();
-        }
-        private void getUserQueries(){
-            JSONObject clientMessage;
-            while(true){
-                try {
-                    JSONObject query= ServerClientCommunicator.readJson(socket);
-                    System.out.println(query);
-                    clientMessage=databaseFacade.execute(query);
-                    ServerClientCommunicator.sendJson(socket,clientMessage);
-                } catch (IOException e ) {
-                    throw new RuntimeException(e);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        private void authenticate(){
-            boolean isAuthenticated=false;
-            JSONObject clientMessage;
-            while(!isAuthenticated){
-                try{
-                    JSONObject user= ServerClientCommunicator.readJson(socket);
-                    isAuthenticated=AuthenticationManager.getInstance().authenticate((String) user.get("username"), (String) user.get("password"));
-                    clientMessage=new JSONObject();
-                    if(isAuthenticated){
-                        clientMessage.put("code_number",0);
-                    }else{
-                        clientMessage.put("code_number",1);
-                        clientMessage.put("error_message","Invalid credentials");
-                    }
-                    ServerClientCommunicator.sendJson(socket,clientMessage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                System.out.println("waiting for udp");
+                DatagramPacket packet
+                        = new DatagramPacket(buf, buf.length);
+                udpSocket.receive(packet);
+                String received
+                        = new String(packet.getData(), 0, packet.getLength());
+                System.out.println("from udp listener"+received);
+            } catch (IOException e) {
+
             }
         }
     }

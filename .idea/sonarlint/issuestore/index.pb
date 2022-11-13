@@ -23,8 +23,6 @@ s
 Csrc/main/java/org/example/exception/InvalidIndexPropertyObject.java,7\3\73c807a7765532e1e2bf419bb1c899496639a1e7
 f
 6src/main/java/org/example/index/types/StringIndex.java,a\d\adac25b7655b438a64076865e1ca894f9d19dee0
-`
-0src/main/java/org/example/database/Database.java,0\1\0173e8186dbd4c22ae91b738cf945567e0da0d61
 m
 =src/main/java/org/example/database/collection/Collection.java,9\3\93eb2c1a83fd34e04fa2cb991ca4f96716cae3cd
 i
@@ -35,8 +33,6 @@ a
 1src/main/java/org/example/index/IndexManager.java,9\1\91509181cbeeb7034fe1bc0d81ebea0ba2b25460
 s
 Csrc/main/java/org/example/authentication/AuthenticationManager.java,7\1\715f9ab9a5347ade5682d54285d9c22aea832fc5
-f
-6src/main/java/org/example/database/DatabaseFacade.java,5\1\51c8fe9f62688afcd9d038a74ad8eb3604ee45d9
 q
 Asrc/main/java/org/example/database/query/CreateDatabaseQuery.java,4\0\408537bdd62262e8d8763957567016e23fa5041a
 s
@@ -53,8 +49,6 @@ g
 7src/main/java/org/example/database/query/FindQuery.java,3\8\38612dc6852ff195f336df2f96926e53d770f7e3
 q
 Asrc/main/java/org/example/database/query/UpdateDocumentQuery.java,9\6\96a958de0ddbcd82bbea7f3cb99e355021ffc88b
-k
-;src/main/java/org/example/database/query/DatabaseQuery.java,f\4\f42960e934584f54bde18107dfba93f9d46ffc8f
 q
 Asrc/main/java/org/example/database/query/CreateDocumentQuery.java,4\e\4eb189b7cb0c547eb54a117919866f163ec97fcc
 }
