@@ -43,9 +43,9 @@ public class FindQuery extends DatabaseQuery {
                 }
             }else{
                 if(collection.get().hasIndex(property)){
-                    jsonArray.add(indexSearch(databaseName,collectionName,property,value,collection.get()));
+                    jsonArray =indexSearch(databaseName,collectionName,property,value,collection.get());
                 }else{
-                    jsonArray.add(fullSearch(databaseName,collectionName,collection.get(),searchObject,value));
+                    jsonArray=fullSearch(databaseName,collectionName,collection.get(),searchObject,value);
                 }
             }
             clientMessage.put("data",jsonArray);

@@ -14,12 +14,12 @@ public class IndexManager implements Serializable {
     private static volatile IndexManager instance;
     private Map<String, Database> databases;
     private ReentrantLock databaseLock;
+
     private IndexManager() {
         databases=new HashMap<>();
         databaseLock=new ReentrantLock();
     }
     public static IndexManager getInstance() {
-
         IndexManager result = instance;
         if (result != null) {
             return result;

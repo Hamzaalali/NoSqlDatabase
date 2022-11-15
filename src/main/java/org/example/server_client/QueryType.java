@@ -10,6 +10,7 @@ public enum QueryType {
     DELETE_DATABASE,
     DELETE_COLLECTION,
     DELETE_DOCUMENT,
-    UPDATE_DOCUMENT
+    UPDATE_DOCUMENT,
+    PING
 
 }

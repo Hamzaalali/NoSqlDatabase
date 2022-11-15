@@ -119,6 +119,12 @@ public class DiskOperations {
         fileWriter.flush();
         fileWriter.close();
     }
+    public static void appendToFile(String filePath,String data) throws IOException {
+        FileWriter fileWriter=new FileWriter(filePath,true);
+        fileWriter.write(data);
+        fileWriter.flush();
+        fileWriter.close();
+    }
     private static JSONObject indexObject(int start,int end,String id){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("start",start);
@@ -126,7 +132,6 @@ public class DiskOperations {
         jsonObject.put("id",id);
         return jsonObject;
     }
-
     private static boolean collectionExists(String databaseName,String collectionName){
         return directoryOrFileExists(collectionPath(databaseName,collectionName));
     }
@@ -137,8 +142,6 @@ public class DiskOperations {
         Path path = Paths.get(pathForFileOrDirectory);
         return Files.exists(path);
     }
-
-
     private static String databasePath(String databaseName){
         return storageDirectoryPath+"/"+databaseName;
     }
@@ -151,5 +154,4 @@ public class DiskOperations {
     private static String collectionDirectoryPath(String databaseName,String collectionName){
         return databasePath(databaseName)+"/"+collectionName;
     }
-
 }

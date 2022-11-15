@@ -1,18 +1,15 @@
 package org.example.server;
-
 import org.example.authentication.AuthenticationManager;
+import org.example.cluster.ClusterManager;
 import org.example.node.to.node.NodeToNodeSenderReceiver;
 import org.example.database.DatabaseFacade;
-
-import org.example.server_client.ServerClientCommunicator;
+import org.example.udp.UdpManager;
 import org.example.udp.UdpRoutineTypes;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.net.*;
-
-
 public class Server implements Runnable{
    private DatabaseFacade databaseFacade;
    public Server(){
@@ -40,23 +37,26 @@ public class Server implements Runnable{
             nodeToNodeSenderReceiver.sendMessage(routine.toJSONString());
             JSONParser jsonParser=new JSONParser();
             packet =nodeToNodeSenderReceiver.receiveMessage();
-            JSONArray jsonArray= (JSONArray) jsonParser.parse(new String(packet.getData(), 0, packet.getLength()));
-            for(int i=0;i<jsonArray.size();i++){
-                JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                AuthenticationManager.getInstance().addUser((String) jsonObject.get("username"), (String) jsonObject.get("password"));
+            JSONObject initlializeObject=(JSONObject) jsonParser.parse(new String(packet.getData(), 0, packet.getLength()));
+            System.out.println(initlializeObject);
+            JSONArray users= (JSONArray) initlializeObject.get("users");
+            for(int i=0;i<users.size();i++){
+                JSONObject user=(JSONObject)users.get(i);
+                AuthenticationManager.getInstance().addUser((String) user.get("username"), (String) user.get("password"));
             }
+            JSONArray nodes= (JSONArray) initlializeObject.get("ports");
+            ClusterManager.getInstance().setNodes(nodes);
+            ClusterManager.getInstance().setTcpPort((long) initlializeObject.get("tcpPort"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
     private class TcpListener implements Runnable{
         @Override
         public void run() {
             try {
                 ServerSocket serverSocket = new ServerSocket(3000);
                 while (true) {
-                    System.out.println("wt");
                     Socket socket = serverSocket.accept();
                     System.out.println("New Connection At Port : "+socket.getPort());
                     new Thread(new ServerConnection(socket,databaseFacade)).start();
@@ -82,8 +82,9 @@ public class Server implements Runnable{
                 String received
                         = new String(packet.getData(), 0, packet.getLength());
                 System.out.println("from udp listener"+received);
-            } catch (IOException e) {
-
+                UdpManager.getInstance().execute(packet);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }
