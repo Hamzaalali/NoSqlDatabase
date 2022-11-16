@@ -1,5 +1,5 @@
 package org.example.udp.routine;
-import org.example.database.DatabaseQueryManager;
+import org.example.tcp.query.DatabaseQueryManager;
 import org.json.simple.JSONObject;
 
 public class SyncRoutine extends UdpRoutine {

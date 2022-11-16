@@ -1,12 +1,11 @@
 package org.example.database.collection;
 
 import org.example.index.types.Index;
-import org.example.json.JsonUtils;
+import org.example.database.JsonUtils;
 import org.json.simple.JSONObject;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Collection {
     private Map<String , JSONObject>idIndex;//this json object should contain information about where the document is in the collection file

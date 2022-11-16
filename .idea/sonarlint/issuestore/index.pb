@@ -5,8 +5,6 @@ d
 4src/main/java/org/example/index/BPlusTree/BTree.java,c\2\c287cd9425de9d0c4ec522ea34d2745886f1b95b
 `
 0src/main/java/org/example/index/types/Index.java,0\6\06d6ca0f80e2893e6c4fa5aaf67b75e3ac893296
-]
--src/main/java/org/example/json/JsonUtils.java,5\5\551a81d27e51678353f19e4ec3016a12bd610f5d
 s
 Csrc/main/java/org/example/exception/NoCollectionFoundException.java,b\4\b4453419c763ba8c5dcdfd512a1127766e8e1960
 u
@@ -39,18 +37,12 @@ J
 dependency-reduced-pom.xml,8\a\8a88dfd5af6f2db5a5431581b56e901f5f143d92
 d
 4src/main/java/org/example/index/types/LongIndex.java,c\6\c6f50a8f55451a2d4d4f1683bedc74bc65481c2d
-i
-9src/main/java/org/example/server_client/SearchObject.java,f\8\f8296792fc36ee9a2416eab688a2b2098de8ac42
-u
-Esrc/main/java/org/example/server_client/ServerClientCommunicator.java,b\4\b43b4222a489649fb4090b492fa260c77b3ed9d1
 k
 ;src/main/java/org/example/database/query/DatabaseQuery.java,f\4\f42960e934584f54bde18107dfba93f9d46ffc8f
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 s
 Csrc/main/java/org/example/database/query/DeleteCollectionQuery.java,0\2\02132e6e45d2a399c073ac2c12bc851e17a9a29b
-s
-Csrc/main/java/org/example/authentication/AuthenticationManager.java,7\1\715f9ab9a5347ade5682d54285d9c22aea832fc5
 :
 
 Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
@@ -60,9 +52,3 @@ p
 @src/main/java/org/example/exception/DatabaseExistsException.java,4\8\488f70b36d53200476a1573dbc7cc8f45ebf3c35
 s
 Csrc/main/java/org/example/exception/InvalidIndexPropertyObject.java,7\3\73c807a7765532e1e2bf419bb1c899496639a1e7
-a
-1src/main/java/org/example/server_client/User.java,e\d\edec0bebc96f42dd6b095323656ea70854ed4703
-t
-Dsrc/main/java/org/example/node/to/node/NodeToNodeSenderReceiver.java,6\8\684f5f616a7a23270d4cbe5521e0132869e09d84
-h
-8src/main/java/org/example/load/balance/LoadBalancer.java,9\b\9b0845bf61d51fcc5ecc2ca23cc12d5bec96a6d1

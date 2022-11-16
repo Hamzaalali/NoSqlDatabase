@@ -21,6 +21,7 @@ public class UdpManager {
     public void execute(DatagramPacket packet) throws ParseException {
         String received
                 = new String(packet.getData(), 0, packet.getLength());
+        System.out.println("received :-"+ received);
         JSONParser jsonParser=new JSONParser();
         JSONObject routine= (JSONObject) jsonParser.parse(received);
         UdpRoutineTypes routineType= UdpRoutineTypes.valueOf((String) routine.get("routineType"));

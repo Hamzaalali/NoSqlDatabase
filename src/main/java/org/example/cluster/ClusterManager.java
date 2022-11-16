@@ -6,11 +6,13 @@ public class ClusterManager {
     private static volatile ClusterManager instance;
     private JSONArray nodes;
     private String broadcastIp;
-    private int bootstrapperPort;//the port that the bootstrapper will send info to
-    private long tcpPort;//the port that is used for client to communicate with this node
+    private int bootstrapperPort;//the port that the bootstrapper listens to for udp traffic
+    private int tcpPort;//the port that this server listens to for tcp connections
+    private int udpPort;//the port that this server listens to for udp traffic
     private ClusterManager() {
         bootstrapperPort= Integer.parseInt(System.getenv("BOOTSTRAPPER_PORT"));
         broadcastIp=System.getenv("BROADCAST_IP");
+        udpPort= Integer.parseInt(System.getenv("UDP_PORT"));
     }
     public static ClusterManager getInstance() {
         ClusterManager result = instance;
@@ -58,6 +60,14 @@ public class ClusterManager {
     }
 
     public void setTcpPort(long tcpPort) {
-        this.tcpPort = tcpPort;
+        this.tcpPort =(int) tcpPort;
+    }
+
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    public void setUdpPort(long udpPort) {
+        this.udpPort =(int) udpPort;
     }
 }

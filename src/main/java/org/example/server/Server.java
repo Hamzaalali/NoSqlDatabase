@@ -1,12 +1,9 @@
 package org.example.server;
-import org.example.authentication.AuthenticationManager;
 import org.example.cluster.ClusterManager;
-import org.example.node.to.node.NodeToNodeSenderReceiver;
+import org.example.tcp.ServerConnection;
 import org.example.udp.UdpManager;
 import org.example.udp.UdpRoutineTypes;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.net.*;
 import java.util.Objects;
@@ -14,35 +11,22 @@ import java.util.Objects;
 public class Server implements Runnable{
     @Override
     public void run() {
-        initialize();
         new Thread(new TcpListener()).start();
         try{
             System.out.println("udp listener start");
             new Thread(new UdpListener()).start();
+            Thread.sleep(1000);
+            sendInitializeMessage();
         }catch (Exception e){
             System.out.println(e.getMessage());
             new RuntimeException(e);
         }
     }
-    private void initialize(){
+    private void sendInitializeMessage(){
         try{
-            NodeToNodeSenderReceiver nodeToNodeSenderReceiver =new NodeToNodeSenderReceiver();
-            DatagramPacket packet;
             JSONObject routine=new JSONObject();
             routine.put("routineType", UdpRoutineTypes.INIT.toString());
-            nodeToNodeSenderReceiver.sendMessage(routine.toJSONString());
-            JSONParser jsonParser=new JSONParser();
-            packet =nodeToNodeSenderReceiver.receiveMessage();
-            JSONObject initlializeObject=(JSONObject) jsonParser.parse(new String(packet.getData(), 0, packet.getLength()));
-            System.out.println(initlializeObject);
-            JSONArray users= (JSONArray) initlializeObject.get("users");
-            for(int i=0;i<users.size();i++){
-                JSONObject user=(JSONObject)users.get(i);
-                AuthenticationManager.getInstance().addUser((String) user.get("username"), (String) user.get("password"));
-            }
-            JSONArray nodes= (JSONArray) initlializeObject.get("ports");
-            ClusterManager.getInstance().setNodes(nodes);
-            ClusterManager.getInstance().setTcpPort((long) initlializeObject.get("tcpPort"));
+            UdpManager.getInstance().sendToBootstrapper((routine.toJSONString()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -66,34 +50,26 @@ public class Server implements Runnable{
         private DatagramSocket udpSocket;
         private byte[] buf = new byte[1024];
         public UdpListener() throws SocketException {
-            udpSocket = new DatagramSocket(4000);
+            udpSocket = new DatagramSocket(ClusterManager.getInstance().getUdpPort());
         }
         @Override
         public void run() {
             try {
                 while (true){
-                    System.out.println("waiting for udp");
                     DatagramPacket packet
                             = new DatagramPacket(buf, buf.length);
                     udpSocket.receive(packet);
                     if(Objects.equals(packet.getAddress().getHostAddress(),InetAddress.getLocalHost().getHostAddress())){
-                        System.out.println("skipped");
                         continue;
                     }
-                    String received
-                            = new String(packet.getData(), 0, packet.getLength());
-                    System.out.println("received :-"+ received);
                     UdpManager.getInstance().execute(packet);
                 }
-
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     }
 }
-
-
 class MainServer {
     public static void main(String[] args)  {
         Server server=new Server();

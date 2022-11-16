@@ -1,35 +1,27 @@
 package org.example.authentication;
 
-import org.example.index.IndexManager;
-import org.example.server_client.User;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class AuthenticationManager {
-    List<User> users;
+    Map<String,User> users;
     private static  AuthenticationManager instance;
 
     private AuthenticationManager() {
-        users=new ArrayList<>();
+        users=new HashMap<>();
     }
     public void addUser(String username,String password){
-        User user=new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        users.add(user);
+        User user=new User(username,password);
+        users.put(username,user);
     }
-    public boolean authenticate(String userName,String password){
-        boolean isAuthenticated=false;
-        for(User user:users){
-            boolean isNameMatch= Objects.equals(user.getUsername(), userName);
-            boolean isPasswordMatch= Objects.equals(user.getPassword(), password);
-            if(isPasswordMatch && isNameMatch){
-                isAuthenticated=true;
+    public Optional<User> authenticate(String userName, String password){
+        User authenticatedUser=null;
+        if(users.containsKey(userName)){
+            User user=users.get(userName);
+            if(user.getPassword()==password){
+                authenticatedUser=user;
             }
         }
-        return isAuthenticated;
+        return Optional.ofNullable(authenticatedUser);
     }
     public static AuthenticationManager getInstance() {
         if (instance == null) {

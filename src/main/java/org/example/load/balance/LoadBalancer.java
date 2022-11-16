@@ -3,8 +3,8 @@ import java.time.Clock;
 import java.util.Arrays;
 
 public class LoadBalancer {
-    private int timeWindow=5;//in seconds
-    private int maxRequests=5;
+    private int timeWindow;//in seconds
+    private int maxRequests;
     private long[] circularBuffer;
     private long counter;
     private long lastRequestTime;//in second
@@ -57,5 +57,13 @@ public class LoadBalancer {
         update(requestTime);
         if(counter>=maxRequests)return false;
         return true;
+    }
+
+    public void setTimeWindow(long timeWindow) {
+        this.timeWindow = (int) timeWindow;
+    }
+
+    public void setMaxRequests(long maxRequests) {
+        this.maxRequests = (int) maxRequests;
     }
 }
