@@ -17,7 +17,7 @@ public class AuthenticationManager {
         User authenticatedUser=null;
         if(users.containsKey(userName)){
             User user=users.get(userName);
-            if(user.getPassword()==password){
+            if(Objects.equals(user.getPassword(), password)){
                 authenticatedUser=user;
             }
         }

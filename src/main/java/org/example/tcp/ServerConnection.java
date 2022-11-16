@@ -47,14 +47,14 @@ public class ServerConnection implements Runnable{
                 }
             }
         }
-        private void authenticate(){
-            while(true){
-                try{
+        private void authenticate() {
+            JSONObject clientMessage=new JSONObject();
+            try{
+                while(true){
                     JSONObject userJson= ServerClientCommunicator.readJson(socket);
                     String username=(String) userJson.get("username");
                     String password=(String) userJson.get("password");
                     Optional<User> user = AuthenticationManager.getInstance().authenticate(username, password);
-                    JSONObject clientMessage=new JSONObject();
                     if(user.isPresent()){
                         authenticatedUser=user.get();
                         clientMessage.put("code_number",0);
@@ -63,10 +63,10 @@ public class ServerConnection implements Runnable{
                         clientMessage.put("code_number",1);
                         clientMessage.put("error_message","Invalid credentials");
                     }
-                    ServerClientCommunicator.sendJson(socket,clientMessage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
                 }
+                ServerClientCommunicator.sendJson(socket,clientMessage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         private void broadcastUser() throws IOException {

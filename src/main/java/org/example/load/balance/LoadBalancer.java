@@ -10,8 +10,6 @@ public class LoadBalancer {
     private long lastRequestTime;//in second
     private static volatile LoadBalancer instance;
     private LoadBalancer(){
-        circularBuffer=new long[timeWindow];
-        Arrays.fill(circularBuffer,0);
         lastRequestTime = Clock.systemDefaultZone().millis()/1000;
         counter=0;
     }
@@ -60,6 +58,8 @@ public class LoadBalancer {
     }
 
     public void setTimeWindow(long timeWindow) {
+        circularBuffer=new long[(int) timeWindow];
+        Arrays.fill(circularBuffer,0);
         this.timeWindow = (int) timeWindow;
     }
 
