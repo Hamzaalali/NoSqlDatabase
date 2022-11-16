@@ -9,6 +9,8 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\DatabaseQuery.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\quries\CreateCollectionQuery.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\quries\PingQuery.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\cluster\Node.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\load\balance\AffinityDistributor.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\UdpRoutineTypes.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\factory\DatabaseQueryFactory.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\collection\document\DocumentSchema.java
@@ -23,6 +25,8 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\routine\UdpRoutine.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\IndexManager.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\quries\CreateIndexQuery.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\routine\QueryRedirectRoutine.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\load\balance\RequestLoad.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTreeNode.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\QueryType.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\authentication\AuthenticationManager.java
@@ -34,7 +38,6 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\DatabaseExistsException.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\InvalidIndexPropertyObject.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\NoDatabaseFoundException.java
-C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\load\balance\LoadBalancer.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTreeLeafNode.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\types\StringIndex.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTree.java

@@ -21,7 +21,7 @@ import java.util.Optional;
 public class FindQuery extends DatabaseQuery {
 
     @Override
-    public JSONObject execute(JSONObject query) {
+    public JSONObject execute() {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
 

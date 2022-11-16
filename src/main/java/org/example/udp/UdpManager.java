@@ -33,12 +33,22 @@ public class UdpManager {
         }
         return instance;
     }
+    public void sendUpdQuery(String ip,int port,JSONObject query,UdpRoutineTypes udpRoutineType) throws IOException {
+        JSONObject routineJson=new JSONObject();
+        routineJson.put("routineType",udpRoutineType.toString());
+        routineJson.put("query",query);
+        DatagramSocket socket=new DatagramSocket();
+        System.out.println(ClusterManager.getInstance().getBroadcastIp());
+        DatagramPacket packet=new DatagramPacket(routineJson.toJSONString().getBytes(),routineJson.toJSONString().getBytes().length, InetAddress.getByName(ip),port);
+        socket.send(packet);
+        System.out.println("sent upd at "+packet.getAddress().getHostAddress()+":"+port);
+    }
     public void broadcast(int port,String data) throws IOException {
         DatagramSocket socket=new DatagramSocket();
         System.out.println(ClusterManager.getInstance().getBroadcastIp());
         DatagramPacket packet=new DatagramPacket(data.getBytes(),data.getBytes().length, InetAddress.getByName(ClusterManager.getInstance().getBroadcastIp()),port);
         socket.send(packet);
-        System.out.println("send broad cast at "+packet.getAddress().getHostAddress()+":"+port);
+        System.out.println("sent broad cast at "+packet.getAddress().getHostAddress()+":"+port);
     }
     public void broadcastQuery(int port,JSONObject query) throws IOException {
         JSONObject routineJson=new JSONObject();
@@ -48,7 +58,7 @@ public class UdpManager {
         System.out.println(ClusterManager.getInstance().getBroadcastIp());
         DatagramPacket packet=new DatagramPacket(routineJson.toJSONString().getBytes(),routineJson.toJSONString().getBytes().length, InetAddress.getByName(ClusterManager.getInstance().getBroadcastIp()),port);
         socket.send(packet);
-        System.out.println("send broad cast at "+packet.getAddress().getHostAddress()+":"+port);
+        System.out.println("sent broad cast at "+packet.getAddress().getHostAddress()+":"+port);
     }
     public void sendToBootstrapper(String msg) throws IOException {
         DatagramSocket socket = new DatagramSocket();

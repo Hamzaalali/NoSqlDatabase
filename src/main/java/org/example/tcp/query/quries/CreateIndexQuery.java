@@ -1,5 +1,6 @@
 package org.example.tcp.query.quries;
 
+import org.example.cluster.ClusterManager;
 import org.example.database.Database;
 import org.example.database.collection.Collection;
 import org.example.database.collection.document.DocumentDataTypes;
@@ -12,6 +13,7 @@ import org.example.index.types.Index;
 import org.example.index.types.IndexFactory;
 import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;
+import org.example.udp.UdpManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -21,10 +23,10 @@ import java.util.Optional;
 
 public class CreateIndexQuery extends DatabaseQuery {
     @Override
-    public JSONObject execute(JSONObject query) {
+    public JSONObject execute() {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
-
+        isBroadcastable=true;
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
@@ -49,6 +51,7 @@ public class CreateIndexQuery extends DatabaseQuery {
             clientMessage.put("code_number",1);
             clientMessage.put("error_message",e.getMessage());
         }
+
         return clientMessage;
     }
     private Optional<JSONObject> getIndexProperty(String databaseName, String collectionName, JSONObject indexPropertyObject) throws IOException, ParseException {

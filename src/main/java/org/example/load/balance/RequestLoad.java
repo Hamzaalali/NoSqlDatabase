@@ -2,25 +2,25 @@ package org.example.load.balance;
 import java.time.Clock;
 import java.util.Arrays;
 
-public class LoadBalancer {
+public class RequestLoad {
     private int timeWindow;//in seconds
     private int maxRequests;
     private long[] circularBuffer;
     private long counter;
     private long lastRequestTime;//in second
-    private static volatile LoadBalancer instance;
-    private LoadBalancer(){
+    private static volatile RequestLoad instance;
+    private RequestLoad(){
         lastRequestTime = Clock.systemDefaultZone().millis()/1000;
         counter=0;
     }
-    public static LoadBalancer getInstance() {
-        LoadBalancer result = instance;
+    public static RequestLoad getInstance() {
+        RequestLoad result = instance;
         if (result != null) {
             return result;
         }
-        synchronized(LoadBalancer.class) {
+        synchronized(RequestLoad.class) {
             if (instance == null) {
-                instance = new LoadBalancer();
+                instance = new RequestLoad();
             }
             return instance;
         }

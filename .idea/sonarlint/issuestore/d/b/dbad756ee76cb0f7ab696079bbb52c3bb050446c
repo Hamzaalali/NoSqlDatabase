@@ -1,0 +1,12 @@
+
+s	java:S135!"YReduce the total number of break and continue statements in this loop to use at most one.(Ž’Š‘øÿÿÿÿ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(ôÖ®¬ùÿÿÿÿ
+L
+java:S1751"6Remove this "return" statement or make it conditional.(ÃÎà–
+O
+java:S2864!"4Iterate over the "entrySet" instead of the "keySet".(Ž’Š‘øÿÿÿÿ
+E
+java:S1128"*Remove this unused import 'java.util.Map'.(¼è½Òþÿÿÿÿ
+D
+java:S1128	".Remove this unused import 'java.util.Objects'.(¼¸õ›

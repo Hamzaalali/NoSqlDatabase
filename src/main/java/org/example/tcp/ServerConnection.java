@@ -2,7 +2,7 @@ package org.example.tcp;
 import org.example.authentication.AuthenticationManager;
 import org.example.cluster.ClusterManager;
 import org.example.file.system.DiskOperations;
-import org.example.load.balance.LoadBalancer;
+import org.example.load.balance.RequestLoad;
 import org.example.authentication.User;
 import org.example.tcp.query.DatabaseQueryManager;
 import org.example.udp.UdpManager;
@@ -32,14 +32,13 @@ public class ServerConnection implements Runnable{
                 try {
                     JSONObject query= ServerClientCommunicator.readJson(socket);
                     System.out.println(query);
-                    if(!LoadBalancer.getInstance().addRequest()){
+                    if(!RequestLoad.getInstance().addRequest()){
                         broadcastUser();
                         isRunning=false;
                         clientMessage=redirectMessage();
                     }else{
                         DiskOperations.appendToFile("logs.json", query.toJSONString());
-                        clientMessage= DatabaseQueryManager.getInstance().execute(query);
-                        UdpManager.getInstance().broadcastQuery(ClusterManager.getInstance().getUdpPort(), query);
+                        clientMessage= DatabaseQueryManager.getInstance().executeAndBroadcast(query);
                     }
                     ServerClientCommunicator.sendJson(socket,clientMessage);
                 } catch (Exception e) {
@@ -77,7 +76,7 @@ public class ServerConnection implements Runnable{
         private JSONObject redirectMessage(){
             JSONObject redirectMessage=new JSONObject();
             redirectMessage.put("code_number",2);
-            redirectMessage.put("ports", ClusterManager.getInstance().getNodesPorts());
+            redirectMessage.put("nodes", ClusterManager.getInstance().getNodesJsonArray());
             redirectMessage.put("thisTcpPort",ClusterManager.getInstance().getTcpPort());
             return redirectMessage;
         }

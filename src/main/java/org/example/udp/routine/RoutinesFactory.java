@@ -11,6 +11,7 @@ public class RoutinesFactory {
         routineMap.put(UdpRoutineTypes.ADD_USER,new AddUserRoutine());
         routineMap.put(UdpRoutineTypes.SYNC,new SyncRoutine());
         routineMap.put(UdpRoutineTypes.INIT,new InitializeRoutine());
+        routineMap.put(UdpRoutineTypes.QUERY_REDIRECT,new QueryRedirectRoutine());
         return routineMap;
     }
 }

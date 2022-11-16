@@ -11,10 +11,9 @@ import java.util.Optional;
 
 public class FindAllQuery extends DatabaseQuery {
     @Override
-    public JSONObject execute(JSONObject query) {
+    public JSONObject execute() {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
-
         try {
             Optional<Database> database=indexManager.getDatabase(databaseName);
             Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);

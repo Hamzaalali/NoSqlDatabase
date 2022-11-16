@@ -18,7 +18,17 @@ public class DatabaseQueryManager {
         QueryType queryType= QueryType.valueOf((String) query.get("queryType"));
         databaseQueryMap.get(queryType).setQuery(query);
         DatabaseQuery databaseQuery=databaseQueryMap.get(queryType);
-        return databaseQuery.execute(query);
+        databaseQuery.setCheckForAffinity(false);
+        return databaseQuery.execute();
+    }
+
+    public JSONObject executeAndBroadcast(JSONObject query) {
+        QueryType queryType= QueryType.valueOf((String) query.get("queryType"));
+        databaseQueryMap.get(queryType).setQuery(query);
+        DatabaseQuery databaseQuery=databaseQueryMap.get(queryType);
+        JSONObject data= databaseQuery.execute();
+        databaseQuery.broadcast();
+        return data;
     }
     public static DatabaseQueryManager getInstance() {
         DatabaseQueryManager result = instance;

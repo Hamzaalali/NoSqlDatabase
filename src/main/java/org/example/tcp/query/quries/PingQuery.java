@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 
 public class PingQuery extends DatabaseQuery {
     @Override
-    public JSONObject execute(JSONObject query) {
+    public JSONObject execute() {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
         return clientMessage;

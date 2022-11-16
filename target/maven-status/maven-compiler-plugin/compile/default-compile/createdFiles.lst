@@ -1,6 +1,6 @@
 org\example\tcp\ServerConnection.class
 org\example\file\system\DiskOperations.class
-org\example\load\balance\LoadBalancer.class
+org\example\load\balance\RequestLoad.class
 org\example\database\JsonUtils.class
 org\example\tcp\query\factory\DatabaseQueryFactory.class
 org\example\udp\routine\InitializeRoutine.class
@@ -32,6 +32,7 @@ org\example\index\BPlusTree\BTree.class
 org\example\index\types\LongIndex.class
 org\example\database\collection\document\DocumentDataTypes.class
 org\example\udp\routine\AddUserRoutine.class
+org\example\cluster\Node.class
 org\example\tcp\query\quries\CreateDocumentQuery.class
 org\example\index\BPlusTree\BTreeLeafNode.class
 org\example\exception\NoDocumentFoundException.class
@@ -41,6 +42,7 @@ org\example\tcp\query\DatabaseQuery.class
 org\example\exception\InvalidSearchObjectException.class
 org\example\tcp\query\quries\DeleteCollectionQuery.class
 org\example\index\BPlusTree\BTreeInnerNode.class
+org\example\udp\routine\QueryRedirectRoutine.class
 org\example\authentication\User.class
 org\example\database\collection\document\DocumentSchema.class
 org\example\exception\DatabaseExistsException.class
@@ -49,6 +51,7 @@ org\example\udp\routine\UdpRoutine.class
 org\example\tcp\ServerClientCommunicator.class
 org\example\index\IndexManager.class
 org\example\index\types\StringIndex.class
+org\example\load\balance\AffinityDistributor.class
 org\example\tcp\query\DatabaseQueryManager.class
 org\example\server\MainServer.class
 org\example\server\Server$TcpListener.class

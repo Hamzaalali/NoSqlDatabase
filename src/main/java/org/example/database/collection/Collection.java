@@ -1,7 +1,9 @@
 package org.example.database.collection;
 
+import org.example.cluster.ClusterManager;
 import org.example.index.types.Index;
 import org.example.database.JsonUtils;
+import org.example.load.balance.AffinityDistributor;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -11,7 +13,11 @@ public class Collection {
     private Map<String , JSONObject>idIndex;//this json object should contain information about where the document is in the collection file
     private Map<String,Index>indexes;
     private ReentrantLock documentLock;
+    private boolean hasAffinity;
+    private int nodeWithAffinity;
     public Collection(){
+        nodeWithAffinity=AffinityDistributor.getInstance().hasAffinity();
+        hasAffinity= ClusterManager.getInstance().getNodeNumber() == nodeWithAffinity;
         indexes=new HashMap<>();
         idIndex=new HashMap<>();
         documentLock=new ReentrantLock();
@@ -72,4 +78,19 @@ public class Collection {
         }
     }
 
+    public boolean hasAffinity() {
+        return hasAffinity;
+    }
+
+    public void setHasAffinity(boolean hasAffinity) {
+        this.hasAffinity = hasAffinity;
+    }
+
+    public int getNodeWithAffinity() {
+        return nodeWithAffinity;
+    }
+
+    public void setNodeWithAffinity(int nodeWithAffinity) {
+        this.nodeWithAffinity = nodeWithAffinity;
+    }
 }
