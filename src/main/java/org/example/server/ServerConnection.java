@@ -1,29 +1,23 @@
 package org.example.server;
-
 import org.example.authentication.AuthenticationManager;
 import org.example.cluster.ClusterManager;
-import org.example.database.DatabaseFacade;
+import org.example.database.DatabaseQueryManager;
 import org.example.file.system.DiskOperations;
 import org.example.load.balance.LoadBalancer;
 import org.example.server_client.ServerClientCommunicator;
 import org.example.udp.UdpManager;
 import org.example.udp.UdpRoutineTypes;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.net.Socket;
-
 public class ServerConnection implements Runnable{
         private Socket socket;
-        private DatabaseFacade databaseFacade;
         private String authUsername;
         private String authPassword;
         boolean isRunning;
-        public ServerConnection(Socket socket,DatabaseFacade databaseFacade) throws IOException {
+        public ServerConnection(Socket socket) throws IOException {
             this.socket = socket;
-            this.databaseFacade=databaseFacade;
             isRunning=true;
         }
         @Override
@@ -43,8 +37,10 @@ public class ServerConnection implements Runnable{
                         clientMessage=redirectMessage();
                     }else{
                         DiskOperations.appendToFile("logs.json", query.toJSONString());
-                        clientMessage=databaseFacade.execute(query);
+                        clientMessage= DatabaseQueryManager.getInstance().execute(query);
+                        UdpManager.getInstance().broadcastQuery(4000,query);
                     }
+                    System.out.println(clientMessage);
                     ServerClientCommunicator.sendJson(socket,clientMessage);
                 } catch (IOException e ) {
                     throw new RuntimeException(e);

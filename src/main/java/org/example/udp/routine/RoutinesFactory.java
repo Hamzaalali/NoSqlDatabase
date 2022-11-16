@@ -9,6 +9,7 @@ public class RoutinesFactory {
     public Map<UdpRoutineTypes,UdpRoutine> getRoutines(){
         Map<UdpRoutineTypes,UdpRoutine> routineMap=new HashMap<>();
         routineMap.put(UdpRoutineTypes.ADD_USER,new AddUserRoutine());
+        routineMap.put(UdpRoutineTypes.SYNC,new SyncRoutine());
         return routineMap;
     }
 }

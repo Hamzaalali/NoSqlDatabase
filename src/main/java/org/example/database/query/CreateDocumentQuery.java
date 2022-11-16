@@ -23,7 +23,8 @@ public class CreateDocumentQuery extends DatabaseQuery {
             DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
             documentSchema.verify(document);
             UUID uuid = UUID.randomUUID();
-            document.put("id",uuid.toString());
+            if(!document.containsKey("id"))
+                document.put("id",uuid.toString());
             JSONObject indexObject= DiskOperations.createDocument(databaseName,collectionName,document);//write it to disk and retrieve the object that contains the location of this document on disk
             collection.orElseThrow(NoCollectionFoundException::new).addDocumentToIndexes(document,indexObject);//add this document to all indexes
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();

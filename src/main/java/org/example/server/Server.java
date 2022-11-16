@@ -2,7 +2,6 @@ package org.example.server;
 import org.example.authentication.AuthenticationManager;
 import org.example.cluster.ClusterManager;
 import org.example.node.to.node.NodeToNodeSenderReceiver;
-import org.example.database.DatabaseFacade;
 import org.example.udp.UdpManager;
 import org.example.udp.UdpRoutineTypes;
 import org.json.simple.JSONArray;
@@ -10,12 +9,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.net.*;
-public class Server implements Runnable{
-   private DatabaseFacade databaseFacade;
-   public Server(){
-       databaseFacade=new DatabaseFacade();
-   }
+import java.util.Objects;
 
+public class Server implements Runnable{
     @Override
     public void run() {
         initialize();
@@ -59,7 +55,7 @@ public class Server implements Runnable{
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("New Connection At Port : "+socket.getPort());
-                    new Thread(new ServerConnection(socket,databaseFacade)).start();
+                    new Thread(new ServerConnection(socket)).start();
                 }
             } catch (IOException e) {
 
@@ -75,14 +71,21 @@ public class Server implements Runnable{
         @Override
         public void run() {
             try {
-                System.out.println("waiting for udp");
-                DatagramPacket packet
-                        = new DatagramPacket(buf, buf.length);
-                udpSocket.receive(packet);
-                String received
-                        = new String(packet.getData(), 0, packet.getLength());
-                System.out.println("from udp listener"+received);
-                UdpManager.getInstance().execute(packet);
+                while (true){
+                    System.out.println("waiting for udp");
+                    DatagramPacket packet
+                            = new DatagramPacket(buf, buf.length);
+                    udpSocket.receive(packet);
+                    if(Objects.equals(packet.getAddress().getHostAddress(),InetAddress.getLocalHost().getHostAddress())){
+                        System.out.println("skipped");
+                        continue;
+                    }
+                    String received
+                            = new String(packet.getData(), 0, packet.getLength());
+                    System.out.println("received :-"+ received);
+                    UdpManager.getInstance().execute(packet);
+                }
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

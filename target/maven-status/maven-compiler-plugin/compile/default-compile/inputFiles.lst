@@ -11,6 +11,7 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\InvalidSearchObjectException.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\UdpRoutineTypes.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\collection\document\DocumentSchema.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\routine\SyncRoutine.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\collection\Collection.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\Database.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\server_client\SearchObject.java
@@ -36,11 +37,11 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\server_client\User.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTreeLeafNode.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\types\StringIndex.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\DatabaseQueryManager.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\query\DeleteDatabaseQuery.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\query\CreateDocumentQuery.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTree.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\NoCollectionFoundException.java
-C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\DatabaseFacade.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\routine\RoutinesFactory.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\query\FindAllQuery.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\database\query\CreateCollectionQuery.java

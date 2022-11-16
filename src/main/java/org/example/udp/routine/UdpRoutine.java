@@ -6,5 +6,5 @@ import java.net.DatagramPacket;
 
 public abstract class UdpRoutine {
 
-    public abstract DatagramPacket execute(DatagramPacket packet,JSONObject routineJson);
+    public abstract void execute( JSONObject routineJson);
 }

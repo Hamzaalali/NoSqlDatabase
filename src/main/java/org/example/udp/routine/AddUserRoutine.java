@@ -10,11 +10,9 @@ import java.net.DatagramPacket;
 public class AddUserRoutine extends UdpRoutine{
 
     @Override
-    public DatagramPacket execute(DatagramPacket packet,JSONObject routineJson) {
+    public void execute(JSONObject routineJson) {
         String password= (String) routineJson.get("password");
         String username= (String) routineJson.get("username");
         AuthenticationManager.getInstance().addUser(username,password);
-        packet = new DatagramPacket("".toString().getBytes(), "".toString().getBytes().length, packet.getAddress(), packet.getPort());
-        return packet;
     }
 }
