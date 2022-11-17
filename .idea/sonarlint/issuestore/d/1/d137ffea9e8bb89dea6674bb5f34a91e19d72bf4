@@ -1,0 +1,6 @@
+
+r
+java:S3077"WUse a thread-safe type; adding "volatile" is not enough to make this field thread-safe.(¦ß¢¶ýÿÿÿÿ
+P	java:S125"<This block of commented-out lines of code should be removed.(¾ Ìi
+I
+java:S1128",Remove this unused import 'java.time.Clock'.(ÕýÓÙ8ê²æ‘È0

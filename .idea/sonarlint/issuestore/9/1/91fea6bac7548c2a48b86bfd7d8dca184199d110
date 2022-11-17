@@ -1,0 +1,13 @@
+
+z
+java:S1488;"dImmediately return this expression instead of assigning it to the temporary variable "propertyJson".(è´±Ý
+s
+java:S1488@"]Immediately return this expression instead of assigning it to the temporary variable "index".(¼¬§ó
+s
+java:S3655%"XCall "propertyJson.isPresent()" or "!propertyJson.isEmpty()" before accessing the value.(ûÖêÂüÿÿÿÿ
+o
+java:S3655*"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(ïð˜¸þÿÿÿÿ
+\
+java:S1128"?Remove this unused import 'org.example.cluster.ClusterManager'.(œØÆð8·˜¿ŽÈ0
+T
+java:S1128"7Remove this unused import 'org.example.udp.UdpManager'.(§‚ìÄ8·˜¿ŽÈ0

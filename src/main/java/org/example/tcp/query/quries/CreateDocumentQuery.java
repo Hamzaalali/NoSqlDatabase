@@ -39,6 +39,7 @@ public class CreateDocumentQuery extends DatabaseQuery {
                 if(!document.containsKey("id")) {
                     document.put("id",uuid.toString());
                 }
+                document.put("_version",0);
                 JSONObject indexObject= DiskOperations.createDocument(databaseName,collectionName,document);//write it to disk and retrieve the object that contains the location of this document on disk
                 collection.orElseThrow(NoCollectionFoundException::new).addDocumentToIndexes(document,indexObject);//add this document to all indexes
                 collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
