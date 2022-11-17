@@ -14,6 +14,8 @@ public class IndexFactory {
     public Map<DocumentDataTypes, Index> getIndexMap() {
         indexMap.put(DocumentDataTypes.LONG,new LongIndex());
         indexMap.put(DocumentDataTypes.STRING,new StringIndex());
+        indexMap.put(DocumentDataTypes.DOUBLE,new DoubleIndex());
+        indexMap.put(DocumentDataTypes.BOOLEAN,new BooleanIndex());
         return indexMap;
     }
 }

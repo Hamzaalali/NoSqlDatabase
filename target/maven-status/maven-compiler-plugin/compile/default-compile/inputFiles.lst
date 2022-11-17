@@ -3,6 +3,7 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\types\IndexFactory.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\udp\routine\AddUserRoutine.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\file\system\DiskOperations.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\types\DoubleIndex.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\query\quries\CreateDatabaseQuery.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\InvalidSearchObjectException.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\tcp\ServerClientCommunicator.java
@@ -38,6 +39,7 @@ C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\or
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\DatabaseExistsException.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\InvalidIndexPropertyObject.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\exception\NoDatabaseFoundException.java
+C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\types\BooleanIndex.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTreeLeafNode.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\types\StringIndex.java
 C:\Users\Hamza\Desktop\Programming\Java\Atypon\Database-in-disk\src\main\java\org\example\index\BPlusTree\BTree.java

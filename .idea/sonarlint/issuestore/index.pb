@@ -3,8 +3,6 @@ m
 =src/main/java/org/example/index/BPlusTree/BTreeInnerNode.java,6\1\6190d1afce5d86bd128f264f22cc8b15a19ef865
 d
 4src/main/java/org/example/index/BPlusTree/BTree.java,c\2\c287cd9425de9d0c4ec522ea34d2745886f1b95b
-`
-0src/main/java/org/example/index/types/Index.java,0\6\06d6ca0f80e2893e6c4fa5aaf67b75e3ac893296
 s
 Csrc/main/java/org/example/exception/NoCollectionFoundException.java,b\4\b4453419c763ba8c5dcdfd512a1127766e8e1960
 u
@@ -13,16 +11,8 @@ q
 Asrc/main/java/org/example/exception/NoDocumentFoundException.java,6\e\6e623006144ff171a9b839259bcfc7f6fe3967d9
 q
 Asrc/main/java/org/example/exception/NoDatabaseFoundException.java,e\9\e9c641b5533d5287d6a5afd7e391daa89b698aab
-f
-6src/main/java/org/example/index/types/StringIndex.java,a\d\adac25b7655b438a64076865e1ca894f9d19dee0
-g
-7src/main/java/org/example/index/types/IndexFactory.java,6\b\6b5351b2f1817af9eefa8d797fb316f53b7ac150
-z
-Jsrc/main/java/org/example/database/collection/document/DocumentSchema.java,b\5\b50d72543d981183e6e8f7e0bf27b76d427813f4
 J
 dependency-reduced-pom.xml,8\a\8a88dfd5af6f2db5a5431581b56e901f5f143d92
-d
-4src/main/java/org/example/index/types/LongIndex.java,c\6\c6f50a8f55451a2d4d4f1683bedc74bc65481c2d
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 :
@@ -38,8 +28,6 @@ a
 1src/main/java/org/example/index/IndexManager.java,9\1\91509181cbeeb7034fe1bc0d81ebea0ba2b25460
 b
 2src/main/java/org/example/authentication/User.java,3\5\3551d0a9d63bdc3896da820dd1cb8a3b36488a7d
-i
-9src/main/java/org/example/file/system/DiskOperations.java,5\9\59227a7a11c35f66ab62030b985b72b429eb9688
 a
 1src/main/java/org/example/database/JsonUtils.java,d\b\dbad756ee76cb0f7ab696079bbb52c3bb050446c
 s
@@ -60,8 +48,6 @@ i
 0src/main/java/org/example/database/Database.java,0\1\0173e8186dbd4c22ae91b738cf945567e0da0d61
 g
 7src/main/java/org/example/load/balance/RequestLoad.java,9\4\947f4960a448da3f142c820cb5492d0d1925edea
-i
-9src/main/java/org/example/tcp/query/quries/FindQuery.java,8\5\858ddb3cbfb6f871c0f904ca25aa32a7f1b26da9
 p
 @src/main/java/org/example/tcp/query/quries/CreateIndexQuery.java,9\1\91fea6bac7548c2a48b86bfd7d8dca184199d110
 u
@@ -84,5 +70,3 @@ u
 Esrc/main/java/org/example/tcp/query/quries/CreateCollectionQuery.java,b\3\b3b4619ae07482c4ff40b8f321e5ef08065dfd48
 s
 Csrc/main/java/org/example/tcp/query/quries/CreateDatabaseQuery.java,2\3\234699f63951a959f8151a37894f58355feda74b
-m
-=src/main/java/org/example/database/collection/Collection.java,9\3\93eb2c1a83fd34e04fa2cb991ca4f96716cae3cd

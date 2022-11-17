@@ -52,6 +52,8 @@ org\example\tcp\ServerClientCommunicator.class
 org\example\index\IndexManager.class
 org\example\index\types\StringIndex.class
 org\example\load\balance\AffinityDistributor.class
+org\example\index\types\BooleanIndex.class
 org\example\tcp\query\DatabaseQueryManager.class
 org\example\server\MainServer.class
 org\example\server\Server$TcpListener.class
+org\example\index\types\DoubleIndex.class

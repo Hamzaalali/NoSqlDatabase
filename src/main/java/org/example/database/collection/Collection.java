@@ -51,8 +51,8 @@ public class Collection {
     }
     public Optional<List<String>> searchForIndex(String property,Object value){
         Index index=indexes.get(property);
-        System.out.println();
-        return (Optional<List<String>>) index.getIndex().search((Comparable) value);
+        System.out.println("from search for index "+index.getIndex().search((Comparable) value));
+        return Optional.ofNullable((List<String>) index.getIndex().search((Comparable) value));
     }
     public boolean hasIndex(String property){
         return (indexes.containsKey(property));

@@ -4,5 +4,6 @@ public enum DocumentDataTypes {
     STRING,
     BOOLEAN,
     LONG,
-    LIST,
+    DOUBLE,
+
 }
