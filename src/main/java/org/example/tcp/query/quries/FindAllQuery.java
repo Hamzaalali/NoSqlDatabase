@@ -1,9 +1,7 @@
 package org.example.tcp.query.quries;
-import org.example.database.Database;
 import org.example.database.collection.Collection;
 import org.example.exception.NoCollectionFoundException;
-import org.example.exception.NoDatabaseFoundException;
-import org.example.file.system.DiskOperations;
+import org.example.exception.system.DiskOperations;
 import org.example.tcp.query.DatabaseQuery;
 import org.json.simple.JSONObject;
 import java.util.List;
@@ -15,6 +13,8 @@ public class FindAllQuery extends DatabaseQuery {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
         try {
+            String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
+            String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
             Optional<Collection> collection = getCollection();
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             List<JSONObject>indexesList=collection.orElseThrow(NoCollectionFoundException::new).findAll();//get all indexes that exist in the id index ( to exclude the soft deleted documents)

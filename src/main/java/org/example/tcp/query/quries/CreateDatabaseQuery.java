@@ -1,9 +1,7 @@
 package org.example.tcp.query.quries;
 
-import org.example.cluster.ClusterManager;
-import org.example.file.system.DiskOperations;
+import org.example.exception.system.DiskOperations;
 import org.example.tcp.query.DatabaseQuery;
-import org.example.udp.UdpManager;
 import org.json.simple.JSONObject;
 
 public class CreateDatabaseQuery extends DatabaseQuery {
@@ -14,6 +12,7 @@ public class CreateDatabaseQuery extends DatabaseQuery {
         clientMessage.put("code_number",0);
         indexManager.getDatabaseLock().lock();
         try{
+            String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
             DiskOperations.createDatabase(databaseName);
             indexManager.addDatabase(databaseName);
         } catch (Exception e) {

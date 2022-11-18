@@ -1,17 +1,13 @@
 package org.example.tcp.query.quries;
 
 import org.example.cluster.ClusterManager;
-import org.example.database.Database;
 import org.example.database.collection.Collection;
 import org.example.exception.NoCollectionFoundException;
-import org.example.exception.NoDatabaseFoundException;
-import org.example.exception.NoDocumentFoundException;
-import org.example.file.system.DiskOperations;
+import org.example.exception.system.DiskOperations;
 import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;
 import org.example.udp.UdpRoutineTypes;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -41,6 +37,9 @@ public class UpdateDocumentQuery extends DatabaseQuery {
     }
 
     private JSONObject updateIfHasAffinity(JSONObject clientMessage, Optional<Collection> collection, JSONObject document) throws NoCollectionFoundException, IOException {
+        JSONObject data=this.data.orElseThrow(IllegalArgumentException::new);
+        String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
+        String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
         long documentVersion= (long) document.get("_version");
         if(udpRoutineTypes==UdpRoutineTypes.QUERY_REDIRECT){
             if (!isSameVersion(clientMessage, documentVersion)) return clientMessage;
@@ -67,6 +66,9 @@ public class UpdateDocumentQuery extends DatabaseQuery {
     }
 
     private void updateIfNoAffinity(JSONObject clientMessage, Optional<Collection> collection, JSONObject document) throws NoCollectionFoundException, IOException {
+        JSONObject data=this.data.orElseThrow(IllegalArgumentException::new);
+        String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
+        String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
         if(udpRoutineTypes==UdpRoutineTypes.SYNC){
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             collection.get().deleteDocument(document);

@@ -1,11 +1,11 @@
 org\example\tcp\ServerConnection.class
-org\example\file\system\DiskOperations.class
 org\example\load\balance\RequestLoad.class
 org\example\database\JsonUtils.class
 org\example\tcp\query\factory\DatabaseQueryFactory.class
 org\example\udp\routine\InitializeRoutine.class
 org\example\tcp\query\quries\DeleteDocumentQuery.class
 org\example\exception\NoCollectionFoundException.class
+org\example\exception\system\DiskOperations.class
 org\example\tcp\query\quries\CreateCollectionQuery.class
 org\example\tcp\query\quries\UpdateDocumentQuery.class
 org\example\tcp\query\quries\DeleteDatabaseQuery.class

@@ -1,12 +1,10 @@
 package org.example.tcp.query.quries;
 
-import org.example.database.Database;
 import org.example.database.collection.Collection;
 import org.example.database.collection.document.DocumentSchema;
 import org.example.exception.InvalidSearchObjectException;
 import org.example.exception.NoCollectionFoundException;
-import org.example.exception.NoDatabaseFoundException;
-import org.example.file.system.DiskOperations;
+import org.example.exception.system.DiskOperations;
 import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;
 import org.json.simple.JSONArray;
@@ -25,6 +23,9 @@ public class FindQuery extends DatabaseQuery {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
         try {
+            String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
+            String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
+            JSONObject searchObject=this.searchObject.orElseThrow(IllegalArgumentException::new);
             Optional<Collection> collection = getCollection();
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             collection.orElseThrow(NoCollectionFoundException::new);
@@ -56,9 +57,9 @@ public class FindQuery extends DatabaseQuery {
     private JSONArray noneIdSearch(Optional<Collection> collection, String property, Object value) throws IOException, ParseException, NoCollectionFoundException {
         JSONArray jsonArray;
         if(collection.get().hasIndex(property)){
-            jsonArray =indexSearch(databaseName,collectionName, property, value, collection.get());
+            jsonArray =indexSearch(databaseName.get(),collectionName.get(), property, value, collection.get());
         }else{
-            jsonArray =fullSearch(databaseName,collectionName, collection.get(),searchObject, value);
+            jsonArray =fullSearch(databaseName.get(),collectionName.get(), collection.get(),searchObject.get(), value);
         }
         return jsonArray;
     }
@@ -66,7 +67,7 @@ public class FindQuery extends DatabaseQuery {
     private void idSearch(Optional<Collection> collection, String value, JSONArray jsonArray) throws IOException, ParseException {
         Optional<JSONObject> indexObject= collection.get().getIndex(value);
         if(indexObject.isPresent()){
-            JSONObject document = DiskOperations.readDocument(databaseName,collectionName,indexObject.get());
+            JSONObject document = DiskOperations.readDocument(databaseName.get(),collectionName.get(),indexObject.get());
             jsonArray.add(document);
         }
     }

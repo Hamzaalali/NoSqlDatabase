@@ -6,7 +6,7 @@ import org.example.database.collection.document.DocumentSchema;
 import org.example.exception.InvalidIndexPropertyObject;
 import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
-import org.example.file.system.DiskOperations;
+import org.example.exception.system.DiskOperations;
 import org.example.index.Index;
 import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;
@@ -24,6 +24,9 @@ public class CreateIndexQuery extends DatabaseQuery {
         clientMessage.put("code_number",0);
         isBroadcastable=true;
         try {
+            String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
+            String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
+            JSONObject indexPropertyObject=this.indexPropertyObject.orElseThrow(IllegalArgumentException::new);
             Optional<Database> database=getDatabase();
             Optional<Collection> collection=getCollection();
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
@@ -31,17 +34,8 @@ public class CreateIndexQuery extends DatabaseQuery {
             String property= (String) propertyJson.orElseThrow(InvalidIndexPropertyObject::new).get("key");
             DocumentDataTypes propertyDataType= (DocumentDataTypes) propertyJson.get().get("documentDataTypes");
             Index index=getIndexFromDataType(propertyDataType);
-            List<JSONObject> indexesList=collection.orElseThrow(NoCollectionFoundException::new).findAll();
-            JSONArray collectionArray=DiskOperations.readCollection(databaseName,collectionName,indexesList);
-            index.setIndexPropertyObject(indexPropertyObject);
-            collection.get().addIndex(property,index);
-            for(int i=0;i<collectionArray.size();i++){
-                JSONObject jsonObject= (JSONObject) collectionArray.get(i);
-                Object value= JsonUtils.searchForValue(jsonObject,indexPropertyObject);
-                collection.get().addToIndex( property,value, (String) jsonObject.get("id"));
-            }
+            addAllCurrentDocumentsToIndex(collection, property, index);
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().unlock();
-
         } catch (Exception e) {
             clientMessage.put("code_number",1);
             clientMessage.put("error_message",e.getMessage());
@@ -49,6 +43,19 @@ public class CreateIndexQuery extends DatabaseQuery {
 
         return clientMessage;
     }
+
+    private void addAllCurrentDocumentsToIndex(Optional<Collection> collection, String property, Index index) throws NoCollectionFoundException, IOException, ParseException {
+        List<JSONObject> indexesList= collection.orElseThrow(NoCollectionFoundException::new).findAll();
+        JSONArray collectionArray=DiskOperations.readCollection(databaseName.get(),collectionName.get(),indexesList);
+        index.setIndexPropertyObject(indexPropertyObject.get());
+        collection.get().addIndex(property, index);
+        for(int i=0;i<collectionArray.size();i++){
+            JSONObject jsonObject= (JSONObject) collectionArray.get(i);
+            Object value= JsonUtils.searchForValue(jsonObject,indexPropertyObject.get());
+            collection.get().addToIndex(property,value, (String) jsonObject.get("id"));
+        }
+    }
+
     private Optional<JSONObject> getIndexProperty(String databaseName, String collectionName, JSONObject indexPropertyObject) throws IOException, ParseException {
         DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
         Optional<JSONObject> propertyJson=documentSchema.getLeafProperty(indexPropertyObject);

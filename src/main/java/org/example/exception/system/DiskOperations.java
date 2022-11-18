@@ -1,4 +1,4 @@
-package org.example.file.system;
+package org.example.exception.system;
 
 import org.apache.commons.io.FileUtils;
 import org.example.database.collection.document.DocumentSchema;

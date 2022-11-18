@@ -1,13 +1,10 @@
 package org.example.tcp.query.quries;
 import org.example.cluster.ClusterManager;
-import org.example.database.Database;
 import org.example.database.collection.Collection;
 import org.example.exception.NoCollectionFoundException;
-import org.example.exception.NoDatabaseFoundException;
 import org.example.exception.NoDocumentFoundException;
-import org.example.file.system.DiskOperations;
+import org.example.exception.system.DiskOperations;
 import org.example.tcp.query.DatabaseQuery;
-import org.example.udp.UdpManager;
 import org.example.udp.UdpRoutineTypes;
 import org.json.simple.JSONObject;
 
@@ -22,6 +19,9 @@ public class DeleteDocumentQuery extends DatabaseQuery {
         isBroadcastable=true;
         boolean doQuery=true;
         try{
+            String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
+            String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
+            String documentId=this.documentId.orElseThrow(IllegalArgumentException::new);
             Optional<Collection> collection = getCollection();
             if(checkForAffinity){
                 if(!collection.get().hasAffinity()){
