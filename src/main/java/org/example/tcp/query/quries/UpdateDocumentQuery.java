@@ -27,39 +27,10 @@ public class UpdateDocumentQuery extends DatabaseQuery {
             Optional<Collection> collection = getCollection();
             JSONObject document = getDocument(collection);
             if(collection.get().hasAffinity()){
-                long documentVersion= (long) document.get("_version");
-                if(udpRoutineTypes==UdpRoutineTypes.QUERY_REDIRECT){
-                    long queryVersion= (long) query.get("_version");
-                    if( queryVersion!=documentVersion){
-                        return clientMessage;
-                    }
-                }
-                collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
-                collection.get().deleteDocument(document);
-                JsonUtils.updateJsonObject(document,data);
-                documentVersion++;
-                document.put("_version",documentVersion);
-                JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
-                collection.get().addDocumentToIndexes(document,newIndexObject);
-                query.put("data",document);
-                clientMessage.put("data",document);
-                collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
+                JSONObject clientMessage1 = updateIfHasAffinity(clientMessage, collection, document);
+                if (clientMessage1 != null) return clientMessage1;
             }else{
-                if(udpRoutineTypes==UdpRoutineTypes.SYNC){
-                    collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
-                    collection.get().deleteDocument(document);
-                    JsonUtils.updateJsonObject(document,data);
-                    JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
-                    collection.get().addDocumentToIndexes(document,newIndexObject);
-                    clientMessage.put("data",document);
-                    collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
-                }else{
-                    long version= (long) document.get("_version");
-                    query.put("_version",version);
-                    System.out.println("query :-"+query);
-                    broadcastType= UdpRoutineTypes.QUERY_REDIRECT;
-                    broadcastIp= ClusterManager.getInstance().getNodesList().get(collection.get().getNodeWithAffinity()-1).getIp();
-                }
+                updateIfNoAffinity(clientMessage, collection, document);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -69,5 +40,47 @@ public class UpdateDocumentQuery extends DatabaseQuery {
         return clientMessage;
     }
 
+    private JSONObject updateIfHasAffinity(JSONObject clientMessage, Optional<Collection> collection, JSONObject document) throws NoCollectionFoundException, IOException {
+        long documentVersion= (long) document.get("_version");
+        if(udpRoutineTypes==UdpRoutineTypes.QUERY_REDIRECT){
+            if (!isSameVersion(clientMessage, documentVersion)) return clientMessage;
+        }
+        collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
+        collection.get().deleteDocument(document);
+        JsonUtils.updateJsonObject(document,data);
+        documentVersion++;
+        document.put("_version",documentVersion);
+        JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
+        collection.get().addDocumentToIndexes(document,newIndexObject);
+        query.put("data", document);
+        clientMessage.put("data", document);
+        collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
+        return null;
+    }
 
+    private boolean isSameVersion(JSONObject clientMessage, long documentVersion) {
+        long queryVersion= (long) query.get("_version");
+        if( queryVersion== documentVersion){
+            return true;
+        }
+        return false;
+    }
+
+    private void updateIfNoAffinity(JSONObject clientMessage, Optional<Collection> collection, JSONObject document) throws NoCollectionFoundException, IOException {
+        if(udpRoutineTypes==UdpRoutineTypes.SYNC){
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
+            collection.get().deleteDocument(document);
+            JsonUtils.updateJsonObject(document,data);
+            JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
+            collection.get().addDocumentToIndexes(document,newIndexObject);
+            clientMessage.put("data", document);
+            collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
+        }else{
+            long version= (long) document.get("_version");
+            query.put("_version",version);
+            System.out.println("query :-"+query);
+            broadcastType= UdpRoutineTypes.QUERY_REDIRECT;
+            broadcastIp= ClusterManager.getInstance().getNodesList().get(collection.get().getNodeWithAffinity()-1).getIp();
+        }
+    }
 }
