@@ -64,12 +64,15 @@ public class ServerConnection implements Runnable{
                     if(user.isPresent()){
                         authenticatedUser=user.get();
                         clientMessage.put("code_number",0);
+                        ServerClientCommunicator.sendJson(socket,clientMessage);
+
                         break;
                     }else{
                         clientMessage.put("code_number",1);
                         clientMessage.put("error_message","Invalid credentials");
+                        ServerClientCommunicator.sendJson(socket,clientMessage);
+
                     }
-                    ServerClientCommunicator.sendJson(socket,clientMessage);
                 }
             }catch (ConnectionTerminatedException e){
                 socket.close();

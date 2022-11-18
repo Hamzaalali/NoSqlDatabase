@@ -54,76 +54,77 @@ public class DiskOperations {
         return appendDocument(databaseName,collectionName,document);
     }
     private static JSONObject appendDocument(String databaseName,String collectionName,JSONObject document) throws IOException {
-        RandomAccessFile readerWriter = new RandomAccessFile(collectionPath(databaseName,collectionName), "rw");
-        FileChannel channel = readerWriter.getChannel();
-        int index= (int) channel.size();
-        ByteBuffer buff;
-        int start;
-        int end;
-        if(index==2){
-            start=index-1;
-            end=start+document.toJSONString().getBytes().length-1;
-            buff = ByteBuffer.wrap((document.toJSONString()+"]").getBytes());
-        }else{
-            start=index;
-            end=start+document.toJSONString().getBytes().length-1;
-            buff = ByteBuffer.wrap((","+document.toJSONString()+"]").getBytes());
+        try(
+                RandomAccessFile readerWriter = new RandomAccessFile(collectionPath(databaseName,collectionName), "rw");
+                FileChannel channel = readerWriter.getChannel();
+        ){
+            int index= (int) channel.size();
+            ByteBuffer buff;
+            int start;
+            int end;
+            if(index==2){
+                start=index-1;
+                end=start+document.toJSONString().getBytes().length-1;
+                buff = ByteBuffer.wrap((document.toJSONString()+"]").getBytes());
+            }else{
+                start=index;
+                end=start+document.toJSONString().getBytes().length-1;
+                buff = ByteBuffer.wrap((","+document.toJSONString()+"]").getBytes());
+            }
+            channel.write(buff,index-1);
+            return indexObject(start,end,document.get("id").toString());
         }
-        channel.write(buff,index-1);
-        channel.close();
-        readerWriter.close();
-        return indexObject(start,end,document.get("id").toString());
     }
     public static JSONObject readDocument(String databaseName,String collectionName,JSONObject indexObject) throws IOException, ParseException {
-        RandomAccessFile reader = new RandomAccessFile(collectionPath(databaseName,collectionName), "r");
+       try( RandomAccessFile reader = new RandomAccessFile(collectionPath(databaseName,collectionName), "r");
         FileChannel channel = reader.getChannel();
-        int start= (int) indexObject.get("start");
-        int end= (int) indexObject.get("end");
-        ByteBuffer buff = ByteBuffer.allocate(end-start+1);
-        channel.read(buff, start);
-        JSONParser jsonParser = new JSONParser();
-        JSONObject document = (JSONObject) jsonParser.parse(new String(buff.array(), StandardCharsets.UTF_8));
-        channel.close();
-        reader.close();
-        return document;
+        ){
+           int start= (int) indexObject.get("start");
+           int end= (int) indexObject.get("end");
+           ByteBuffer buff = ByteBuffer.allocate(end-start+1);
+           channel.read(buff, start);
+           JSONParser jsonParser = new JSONParser();
+           JSONObject document = (JSONObject) jsonParser.parse(new String(buff.array(), StandardCharsets.UTF_8));
+           return document;
+       }
     }
     public static DocumentSchema getSchema(String databaseName,String collectionName) throws IOException, ParseException {
-        JSONParser jsonParser = new JSONParser();
-        FileReader schemaReader = new FileReader(collectionSchemaPath(databaseName,collectionName));
-        Object obj = jsonParser.parse(schemaReader);
-        JSONObject schema = (JSONObject) obj;
-        DocumentSchema documentSchema=new DocumentSchema(schema);
-        schemaReader.close();
-        return documentSchema;
+        try(FileReader schemaReader = new FileReader(collectionSchemaPath(databaseName,collectionName))){
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(schemaReader);
+            JSONObject schema = (JSONObject) obj;
+            DocumentSchema documentSchema=new DocumentSchema(schema);
+            return documentSchema;
+        }
     }
     public static JSONArray readCollection(String databaseName,String collectionName, List<JSONObject> indexesList) throws IOException, ParseException {
         JSONArray jsonArray=new JSONArray();
-        RandomAccessFile reader = new RandomAccessFile(collectionPath(databaseName,collectionName), "r");
-        FileChannel channel = reader.getChannel();
-        for(JSONObject indexObject:indexesList){
-            int start= (int) indexObject.get("start");
-            int end= (int) indexObject.get("end");
-            ByteBuffer buff = ByteBuffer.allocate(end-start+1);
-            channel.read(buff, start);
-            JSONParser jsonParser = new JSONParser();
-            JSONObject document = (JSONObject) jsonParser.parse(new String(buff.array(), StandardCharsets.UTF_8));
-            jsonArray.add(document);
+        try(RandomAccessFile reader = new RandomAccessFile(collectionPath(databaseName,collectionName), "r");
+        FileChannel channel = reader.getChannel();)
+        {
+            for(JSONObject indexObject:indexesList){
+                int start= (int) indexObject.get("start");
+                int end= (int) indexObject.get("end");
+                ByteBuffer buff = ByteBuffer.allocate(end-start+1);
+                channel.read(buff, start);
+                JSONParser jsonParser = new JSONParser();
+                JSONObject document = (JSONObject) jsonParser.parse(new String(buff.array(), StandardCharsets.UTF_8));
+                jsonArray.add(document);
+            }
         }
-        channel.close();
-        reader.close();
         return jsonArray;
     }
     private static void writeToFile(String filePath,String data) throws IOException {
-        FileWriter fileWriter=new FileWriter(filePath);
-        fileWriter.write(data);
-        fileWriter.flush();
-        fileWriter.close();
+        try(FileWriter fileWriter=new FileWriter(filePath)){
+            fileWriter.write(data);
+            fileWriter.flush();
+        }
     }
     public static void appendToFile(String filePath,String data) throws IOException {
-        FileWriter fileWriter=new FileWriter(filePath,true);
-        fileWriter.write(data);
-        fileWriter.flush();
-        fileWriter.close();
+        try(FileWriter fileWriter=new FileWriter(filePath,true)){
+            fileWriter.write(data);
+            fileWriter.flush();
+        }
     }
     private static JSONObject indexObject(int start,int end,String id){
         JSONObject jsonObject=new JSONObject();
