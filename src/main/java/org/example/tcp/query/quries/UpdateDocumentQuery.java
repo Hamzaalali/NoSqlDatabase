@@ -20,6 +20,9 @@ public class UpdateDocumentQuery extends DatabaseQuery {
         clientMessage.put("code_number",0);
         isBroadcastable=true;
         try{
+            this.data.orElseThrow(IllegalArgumentException::new);
+            this.databaseName.orElseThrow(IllegalArgumentException::new);
+            this.collectionName.orElseThrow(IllegalArgumentException::new);
             Optional<Collection> collection = getCollection();
             JSONObject document = getDocument(collection);
             if(collection.get().hasAffinity()){
@@ -37,19 +40,16 @@ public class UpdateDocumentQuery extends DatabaseQuery {
     }
 
     private JSONObject updateIfHasAffinity(JSONObject clientMessage, Optional<Collection> collection, JSONObject document) throws NoCollectionFoundException, IOException {
-        JSONObject data=this.data.orElseThrow(IllegalArgumentException::new);
-        String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
-        String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
         long documentVersion= (long) document.get("_version");
         if(udpRoutineTypes==UdpRoutineTypes.QUERY_REDIRECT){
             if (!isSameVersion(clientMessage, documentVersion)) return clientMessage;
         }
         collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
         collection.get().deleteDocument(document);
-        JsonUtils.updateJsonObject(document,data);
+        JsonUtils.updateJsonObject(document,data.get());
         documentVersion++;
         document.put("_version",documentVersion);
-        JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
+        JSONObject newIndexObject= DiskOperations.createDocument(databaseName.get(), collectionName.get(), document);
         collection.get().addDocumentToIndexes(document,newIndexObject);
         query.put("data", document);
         clientMessage.put("data", document);
@@ -66,14 +66,11 @@ public class UpdateDocumentQuery extends DatabaseQuery {
     }
 
     private void updateIfNoAffinity(JSONObject clientMessage, Optional<Collection> collection, JSONObject document) throws NoCollectionFoundException, IOException {
-        JSONObject data=this.data.orElseThrow(IllegalArgumentException::new);
-        String databaseName=this.databaseName.orElseThrow(IllegalArgumentException::new);
-        String collectionName=this.collectionName.orElseThrow(IllegalArgumentException::new);
         if(udpRoutineTypes==UdpRoutineTypes.SYNC){
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             collection.get().deleteDocument(document);
-            JsonUtils.updateJsonObject(document,data);
-            JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
+            JsonUtils.updateJsonObject(document,data.get());
+            JSONObject newIndexObject= DiskOperations.createDocument(databaseName.get(), collectionName.get(), document);
             collection.get().addDocumentToIndexes(document,newIndexObject);
             clientMessage.put("data", document);
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
