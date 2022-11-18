@@ -69,8 +69,8 @@ public class ServerConnection implements Runnable{
                         clientMessage.put("code_number",1);
                         clientMessage.put("error_message","Invalid credentials");
                     }
+                    ServerClientCommunicator.sendJson(socket,clientMessage);
                 }
-                ServerClientCommunicator.sendJson(socket,clientMessage);
             }catch (ConnectionTerminatedException e){
                 socket.close();
             }

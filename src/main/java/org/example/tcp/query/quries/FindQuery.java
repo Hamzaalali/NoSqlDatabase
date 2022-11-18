@@ -33,20 +33,7 @@ public class FindQuery extends DatabaseQuery {
             propertyJson.orElseThrow(InvalidSearchObjectException::new);
             String property= (String) propertyJson.get().get("key");
             Object value=  propertyJson.get().get("value");
-            JSONArray jsonArray=new JSONArray();
-            if(Objects.equals(property, "id")){
-                Optional<JSONObject> indexObject=collection.get().getIndex((String) value);
-                if(indexObject.isPresent()){
-                    JSONObject document = DiskOperations.readDocument(databaseName,collectionName,indexObject.get());
-                    jsonArray.add(document);
-                }
-            }else{
-                if(collection.get().hasIndex(property)){
-                    jsonArray =indexSearch(databaseName,collectionName,property,value,collection.get());
-                }else{
-                    jsonArray=fullSearch(databaseName,collectionName,collection.get(),searchObject,value);
-                }
-            }
+            JSONArray jsonArray=search(collection, property, value);
             clientMessage.put("data",jsonArray);
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
         } catch (Exception e) {
@@ -54,6 +41,34 @@ public class FindQuery extends DatabaseQuery {
             clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
+    }
+
+    private JSONArray search(Optional<Collection> collection, String property, Object value) throws IOException, ParseException, NoCollectionFoundException {
+        JSONArray jsonArray=new JSONArray();
+        if(Objects.equals(property, "id")){
+            idSearch(collection, (String) value, jsonArray);
+        }else{
+            jsonArray = noneIdSearch(collection, property, value);
+        }
+        return jsonArray;
+    }
+
+    private JSONArray noneIdSearch(Optional<Collection> collection, String property, Object value) throws IOException, ParseException, NoCollectionFoundException {
+        JSONArray jsonArray;
+        if(collection.get().hasIndex(property)){
+            jsonArray =indexSearch(databaseName,collectionName, property, value, collection.get());
+        }else{
+            jsonArray =fullSearch(databaseName,collectionName, collection.get(),searchObject, value);
+        }
+        return jsonArray;
+    }
+
+    private void idSearch(Optional<Collection> collection, String value, JSONArray jsonArray) throws IOException, ParseException {
+        Optional<JSONObject> indexObject= collection.get().getIndex(value);
+        if(indexObject.isPresent()){
+            JSONObject document = DiskOperations.readDocument(databaseName,collectionName,indexObject.get());
+            jsonArray.add(document);
+        }
     }
 
     private JSONArray indexSearch(String databaseName,String collectionName,String property,Object value,Collection collection) throws IOException, ParseException, NoCollectionFoundException {
