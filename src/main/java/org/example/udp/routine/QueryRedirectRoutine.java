@@ -7,6 +7,6 @@ public class QueryRedirectRoutine extends UdpRoutine{
     @Override
     public void execute(JSONObject routineJson) {
         JSONObject query= (JSONObject) routineJson.get("query");
-        DatabaseQueryManager.getInstance().executeAndBroadcast(query);
+        DatabaseQueryManager.getInstance().redirectExecuteAndBroadcast(query);
     }
 }

@@ -13,7 +13,6 @@ public class Server implements Runnable{
     public void run() {
         new Thread(new TcpListener()).start();
         try{
-            System.out.println("udp listener start");
             new Thread(new UdpListener()).start();
             Thread.sleep(1000);
             sendInitializeMessage();
@@ -39,6 +38,7 @@ public class Server implements Runnable{
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("New Connection At Port : "+socket.getPort());
+                    System.out.println("--------------------------------------------");
                     new Thread(new ServerConnection(socket)).start();
                 }
             } catch (IOException e) {

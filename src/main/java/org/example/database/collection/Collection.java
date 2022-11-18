@@ -1,7 +1,7 @@
 package org.example.database.collection;
 
 import org.example.cluster.ClusterManager;
-import org.example.index.types.Index;
+import org.example.index.Index;
 import org.example.database.JsonUtils;
 import org.example.load.balance.AffinityDistributor;
 import org.json.simple.JSONObject;
@@ -51,7 +51,6 @@ public class Collection {
     }
     public Optional<List<String>> searchForIndex(String property,Object value){
         Index index=indexes.get(property);
-        System.out.println("from search for index "+index.getIndex().search((Comparable) value));
         return Optional.ofNullable((List<String>) index.getIndex().search((Comparable) value));
     }
     public boolean hasIndex(String property){

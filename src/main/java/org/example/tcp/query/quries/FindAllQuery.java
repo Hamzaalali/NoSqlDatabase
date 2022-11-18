@@ -15,8 +15,7 @@ public class FindAllQuery extends DatabaseQuery {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
         try {
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            Optional<Collection> collection = getCollection();
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             List<JSONObject>indexesList=collection.orElseThrow(NoCollectionFoundException::new).findAll();//get all indexes that exist in the id index ( to exclude the soft deleted documents)
             clientMessage.put("data",DiskOperations.readCollection(databaseName,collectionName,indexesList));//read from the disk

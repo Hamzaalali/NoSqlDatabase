@@ -23,10 +23,6 @@ public class AffinityDistributor {
         }
     }
     public int hasAffinity(){
-//        if(ClusterManager.getInstance().getNodeNumber()==nodePointer){
-//            pointToNextNode();
-//            return true;
-//        }
         int nodeWithAffinity=nodePointer;
         pointToNextNode();
         return nodeWithAffinity;

@@ -18,7 +18,7 @@ public class CreateCollectionQuery extends DatabaseQuery {
         isBroadcastable=true;
         clientMessage.put("code_number",0);
         try {
-            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Database> database=getDatabase();
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
             DocumentSchema.verifyJsonTypes(schema);
             DiskOperations.createCollection(databaseName,collectionName,schema);

@@ -1,5 +1,6 @@
 package org.example.tcp;
 
+import org.example.exception.ConnectionTerminatedException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -7,31 +8,13 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Optional;
 
 public class ServerClientCommunicator {
-
-
-    public static String readString(Socket socket) throws IOException {
-        return getBufferReader(socket).readLine();
+    public static Optional<String> readString(Socket socket) throws IOException {
+        String message=getBufferReader(socket).readLine();
+        return Optional.ofNullable(message);
     }
-
-    public static int readInteger(Socket socket) throws IOException {
-        return Integer.parseInt(getBufferReader(socket).readLine());
-    }
-
-
-    public static void sendObject(Socket socket, Object obj) throws IOException {
-        ObjectOutputStream toServer =
-                new ObjectOutputStream(socket.getOutputStream());
-        toServer.writeObject(obj);
-    }
-
-    public static Object readObj(Socket socket) throws IOException, ClassNotFoundException {
-        ObjectInputStream inputFromClient =
-                new ObjectInputStream(socket.getInputStream());
-        return inputFromClient.readObject();
-    }
-
     public static void sendMessage(Socket socket, String message) throws IOException {
         PrintWriter printWriter = getPrintWriter(socket);
         printWriter.println(message);
@@ -40,20 +23,10 @@ public class ServerClientCommunicator {
     public static void sendJson(Socket socket,JSONObject jsonObject) throws IOException {
         sendMessage(socket,jsonObject.toJSONString());
     }
-    public static void sendJsonArray(Socket socket,JSONArray jsonArray) throws IOException {
-        sendMessage(socket,jsonArray.toJSONString());
-    }
-    public static JSONArray readJsonArray(Socket socket) throws IOException, ClassNotFoundException, ParseException {
-        String jsonString=(String) readObj(socket);
+    public static JSONObject readJson(Socket socket) throws IOException, ParseException, ConnectionTerminatedException {
+        Optional<String> jsonString= readString(socket);
         JSONParser jsonParser=new JSONParser();
-        JSONArray jsonArray= (JSONArray) jsonParser.parse(jsonString);
-        return jsonArray;
-
-    }
-    public static JSONObject readJson(Socket socket) throws IOException, ParseException {
-        String jsonString= readString(socket);
-        JSONParser jsonParser=new JSONParser();
-        JSONObject json= (JSONObject) jsonParser.parse(jsonString);
+        JSONObject json= (JSONObject) jsonParser.parse(jsonString.orElseThrow(ConnectionTerminatedException::new));
         return json;
     }
     private static BufferedReader getBufferReader(Socket socket) throws IOException {

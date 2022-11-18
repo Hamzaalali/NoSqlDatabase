@@ -11,7 +11,9 @@ import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;
 import org.example.udp.UdpRoutineTypes;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class UpdateDocumentQuery extends DatabaseQuery {
@@ -21,44 +23,51 @@ public class UpdateDocumentQuery extends DatabaseQuery {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
         isBroadcastable=true;
-        boolean doQuery=true;
         try{
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
-            Optional<JSONObject> indexObject=collection.orElseThrow(NoCollectionFoundException::new).getIndex(documentId);
-            JSONObject document= DiskOperations.readDocument(databaseName,collectionName,indexObject.orElseThrow(NoDocumentFoundException::new));
-            long version= (long) document.get("_version");
-            query.put("_version",version);
-            if(checkForAffinity){
-                if(!collection.get().hasAffinity()){
-                    broadcastType= UdpRoutineTypes.QUERY_REDIRECT;
-                    broadcastIp= ClusterManager.getInstance().getNodesList().get(collection.get().getNodeWithAffinity()-1).getIp();
-                    doQuery=false;
-                }
-            }
-            if(doQuery){
-                long queryVersion= (long) query.get("_version");
+            Optional<Collection> collection = getCollection();
+            JSONObject document = getDocument(collection);
+            if(collection.get().hasAffinity()){
                 long documentVersion= (long) document.get("_version");
-                System.out.println(queryVersion);
-                System.out.println(documentVersion);
-                if(queryVersion==documentVersion){
-                    System.out.println("test");
+                if(udpRoutineTypes==UdpRoutineTypes.QUERY_REDIRECT){
+                    long queryVersion= (long) query.get("_version");
+                    if( queryVersion!=documentVersion){
+                        return clientMessage;
+                    }
+                }
+                collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
+                collection.get().deleteDocument(document);
+                JsonUtils.updateJsonObject(document,data);
+                documentVersion++;
+                document.put("_version",documentVersion);
+                JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
+                collection.get().addDocumentToIndexes(document,newIndexObject);
+                query.put("data",document);
+                clientMessage.put("data",document);
+                collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
+            }else{
+                if(udpRoutineTypes==UdpRoutineTypes.SYNC){
                     collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
                     collection.get().deleteDocument(document);
                     JsonUtils.updateJsonObject(document,data);
-                    documentVersion++;
-                    document.put("_version",documentVersion);
-                    System.out.println(document.get("_version"));
                     JSONObject newIndexObject= DiskOperations.createDocument(databaseName, collectionName, document);
                     collection.get().addDocumentToIndexes(document,newIndexObject);
                     clientMessage.put("data",document);
                     collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().unlock();
+                }else{
+                    long version= (long) document.get("_version");
+                    query.put("_version",version);
+                    System.out.println("query :-"+query);
+                    broadcastType= UdpRoutineTypes.QUERY_REDIRECT;
+                    broadcastIp= ClusterManager.getInstance().getNodesList().get(collection.get().getNodeWithAffinity()-1).getIp();
                 }
             }
         } catch (Exception e) {
+            System.out.println(e);
             clientMessage.put("code_number",1);
             clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
     }
+
+
 }

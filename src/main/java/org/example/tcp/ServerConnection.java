@@ -1,6 +1,7 @@
 package org.example.tcp;
 import org.example.authentication.AuthenticationManager;
 import org.example.cluster.ClusterManager;
+import org.example.exception.ConnectionTerminatedException;
 import org.example.file.system.DiskOperations;
 import org.example.load.balance.RequestLoad;
 import org.example.authentication.User;
@@ -23,30 +24,36 @@ public class ServerConnection implements Runnable{
         }
         @Override
         public void run() {
-           authenticate();
-           getUserQueries();
+            try{
+                authenticate();
+                getUserQueries();
+            } catch (IOException e) {
+                System.out.println("Error With Connection");
+            }
         }
-        private void getUserQueries(){
+        private void getUserQueries() throws IOException {
             JSONObject clientMessage;
-            while(isRunning){
-                try {
+            try {
+                while(isRunning){
                     JSONObject query= ServerClientCommunicator.readJson(socket);
-                    System.out.println(query);
+                    System.out.println("received :-"+ query);
+                    System.out.println("--------------------------------------------");
                     if(!RequestLoad.getInstance().addRequest()){
                         broadcastUser();
                         isRunning=false;
                         clientMessage=redirectMessage();
                     }else{
-                        DiskOperations.appendToFile("logs.json", query.toJSONString());
                         clientMessage= DatabaseQueryManager.getInstance().executeAndBroadcast(query);
                     }
                     ServerClientCommunicator.sendJson(socket,clientMessage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
                 }
+            } catch (ConnectionTerminatedException e){
+                socket.close();
+            }catch (Exception e) {
+               System.out.println("socket closed at port "+socket.getPort());
             }
         }
-        private void authenticate() {
+        private void authenticate() throws IOException {
             JSONObject clientMessage=new JSONObject();
             try{
                 while(true){
@@ -64,7 +71,10 @@ public class ServerConnection implements Runnable{
                     }
                 }
                 ServerClientCommunicator.sendJson(socket,clientMessage);
-            } catch (Exception e) {
+            }catch (ConnectionTerminatedException e){
+                socket.close();
+            }
+            catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }

@@ -22,6 +22,7 @@ public class UdpManager {
         String received
                 = new String(packet.getData(), 0, packet.getLength());
         System.out.println("received :-"+ received);
+        System.out.println("--------------------------------------------");
         JSONParser jsonParser=new JSONParser();
         JSONObject routine= (JSONObject) jsonParser.parse(received);
         UdpRoutineTypes routineType= UdpRoutineTypes.valueOf((String) routine.get("routineType"));
@@ -38,27 +39,17 @@ public class UdpManager {
         routineJson.put("routineType",udpRoutineType.toString());
         routineJson.put("query",query);
         DatagramSocket socket=new DatagramSocket();
-        System.out.println(ClusterManager.getInstance().getBroadcastIp());
         DatagramPacket packet=new DatagramPacket(routineJson.toJSONString().getBytes(),routineJson.toJSONString().getBytes().length, InetAddress.getByName(ip),port);
         socket.send(packet);
-        System.out.println("sent upd at "+packet.getAddress().getHostAddress()+":"+port);
+        System.out.println("sent to "+packet.getAddress().getHostAddress()+":"+port+" :- "+query.toJSONString());
+        System.out.println("--------------------------------------------");
     }
     public void broadcast(int port,String data) throws IOException {
         DatagramSocket socket=new DatagramSocket();
-        System.out.println(ClusterManager.getInstance().getBroadcastIp());
         DatagramPacket packet=new DatagramPacket(data.getBytes(),data.getBytes().length, InetAddress.getByName(ClusterManager.getInstance().getBroadcastIp()),port);
         socket.send(packet);
-        System.out.println("sent broad cast at "+packet.getAddress().getHostAddress()+":"+port);
-    }
-    public void broadcastQuery(int port,JSONObject query) throws IOException {
-        JSONObject routineJson=new JSONObject();
-        routineJson.put("routineType",UdpRoutineTypes.SYNC.toString());
-        routineJson.put("query",query);
-        DatagramSocket socket=new DatagramSocket();
-        System.out.println(ClusterManager.getInstance().getBroadcastIp());
-        DatagramPacket packet=new DatagramPacket(routineJson.toJSONString().getBytes(),routineJson.toJSONString().getBytes().length, InetAddress.getByName(ClusterManager.getInstance().getBroadcastIp()),port);
-        socket.send(packet);
-        System.out.println("sent broad cast at "+packet.getAddress().getHostAddress()+":"+port);
+        System.out.println("sent to "+packet.getAddress().getHostAddress()+":"+port+" :- "+data);
+        System.out.println("--------------------------------------------");
     }
     public void sendToBootstrapper(String msg) throws IOException {
         DatagramSocket socket = new DatagramSocket();

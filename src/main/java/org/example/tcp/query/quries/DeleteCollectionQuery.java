@@ -17,7 +17,7 @@ public class DeleteCollectionQuery extends DatabaseQuery {
         clientMessage.put("code_number",0);
         isBroadcastable=true;
         try{
-            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Database> database=getDatabase();
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
             DiskOperations.deleteCollection(databaseName,collectionName);//hard delete
             database.orElseThrow(NoDatabaseFoundException::new).deleteCollection(collectionName);//delete from the index structure

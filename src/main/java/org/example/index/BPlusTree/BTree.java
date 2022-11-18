@@ -37,41 +37,6 @@ public class BTree<TKey extends Comparable<TKey>, TValue> {
 		return (index == -1) ? null : leaf.getValue(index);
 	}
 
-
-//	public List<TValue> searchWithDuplicates(TKey key){
-//		BTreeLeafNode<TKey, TValue> leaf = this.findLeafNodeShouldContainKey(key);
-//		List<TValue> tValues=new ArrayList<>();
-//		while(leaf!=null){
-//			int i=0;
-//			for (; i < leaf.getKeyCount(); ++i) {
-//				System.out.println(leaf.getKey(i));
-//				int cmp = leaf.getKey(i).compareTo(key);
-//				if (cmp == 0) {
-//					tValues.add(leaf.getValue(i));
-//				}
-//			}
-//			if(i!=leaf.getKeyCount()){
-//				break;
-//			}
-//			leaf=(BTreeLeafNode)leaf.getLeftSibling();
-//		}
-//	    leaf = this.findLeafNodeShouldContainKey(key);
-//		while(leaf!=null){
-//			int i=0;
-//			for (; i < leaf.getKeyCount(); ++i) {
-//				System.out.println(leaf.getKey(i));
-//				int cmp = leaf.getKey(i).compareTo(key);
-//				if (cmp == 0) {
-//					tValues.add(leaf.getValue(i));
-//				}
-//			}
-//			if(i!=leaf.getKeyCount()){
-//				break;
-//			}
-//			leaf=(BTreeLeafNode)leaf.getLeftSibling();
-//		}
-//		return tValues;
-//	}
 	
 	/**
 	 * Delete a key and its associated value from the tree.

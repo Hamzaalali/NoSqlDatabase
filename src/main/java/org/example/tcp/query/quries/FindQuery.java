@@ -24,26 +24,18 @@ public class FindQuery extends DatabaseQuery {
     public JSONObject execute() {
         JSONObject clientMessage=new JSONObject();
         clientMessage.put("code_number",0);
-
         try {
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            Optional<Collection> collection = getCollection();
             collection.orElseThrow(NoCollectionFoundException::new).getDocumentLock().lock();
             collection.orElseThrow(NoCollectionFoundException::new);
             DocumentSchema documentSchema=DiskOperations.getSchema(databaseName,collectionName);
-            System.out.println("test0");
-            System.out.println(documentSchema.getLeafProperty(searchObject).get());
-            System.out.println(documentSchema.getLeafProperty(searchObject).get().getClass().getSimpleName());
             Optional<JSONObject> propertyJson=documentSchema.getLeafProperty(searchObject);
-            System.out.println("test1");
             propertyJson.orElseThrow(InvalidSearchObjectException::new);
             String property= (String) propertyJson.get().get("key");
             Object value=  propertyJson.get().get("value");
             JSONArray jsonArray=new JSONArray();
             if(Objects.equals(property, "id")){
-                System.out.println("test3");
                 Optional<JSONObject> indexObject=collection.get().getIndex((String) value);
-                System.out.println("test4");
                 if(indexObject.isPresent()){
                     JSONObject document = DiskOperations.readDocument(databaseName,collectionName,indexObject.get());
                     jsonArray.add(document);
@@ -65,11 +57,8 @@ public class FindQuery extends DatabaseQuery {
     }
 
     private JSONArray indexSearch(String databaseName,String collectionName,String property,Object value,Collection collection) throws IOException, ParseException, NoCollectionFoundException {
-        System.out.println("test5");
-        System.out.println("is present ?"+ collection.searchForIndex(property,value).isPresent());
         Optional<List<String>> idsList=collection.searchForIndex(property,value);
         JSONArray jsonArray=new JSONArray();
-        System.out.println("test6");
         if(idsList.isEmpty()){
             return jsonArray;
         }
@@ -84,7 +73,6 @@ public class FindQuery extends DatabaseQuery {
         return jsonArray;
     }
     private JSONArray fullSearch(String databaseName,String collectionName,Collection collection,JSONObject searchObject,Object value) throws IOException, ParseException {
-        System.out.println("test7");
         List<JSONObject> indexesObjectList=collection.findAll();
         JSONArray jsonArray=new JSONArray();
         for(JSONObject indexObject:indexesObjectList){

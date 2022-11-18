@@ -1,13 +1,9 @@
 package org.example.database;
-
 import org.example.database.collection.Collection;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 public class Database {
     private Map<String,Collection> collections;
     private ReentrantLock collectionLock;

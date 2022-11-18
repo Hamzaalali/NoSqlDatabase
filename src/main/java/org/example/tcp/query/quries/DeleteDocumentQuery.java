@@ -22,8 +22,7 @@ public class DeleteDocumentQuery extends DatabaseQuery {
         isBroadcastable=true;
         boolean doQuery=true;
         try{
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            Optional<Collection> collection = getCollection();
             if(checkForAffinity){
                 if(!collection.get().hasAffinity()){
                     broadcastType= UdpRoutineTypes.QUERY_REDIRECT;

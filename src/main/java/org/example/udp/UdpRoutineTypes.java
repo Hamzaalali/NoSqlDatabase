@@ -4,5 +4,6 @@ public enum UdpRoutineTypes {
     INIT,
     ADD_USER,
     SYNC,
-    QUERY_REDIRECT
+    QUERY_REDIRECT,
+    NONE
 }

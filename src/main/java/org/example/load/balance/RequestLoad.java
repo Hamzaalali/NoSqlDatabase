@@ -41,15 +41,20 @@ public class RequestLoad {
             counter=0;
             Arrays.fill(circularBuffer,0);
         }else{
-            int deletePointer= (int) ((lastRequestTime+1)%timeWindow);
-            while(timeDifference>0){
-                counter-=circularBuffer[deletePointer];
-                circularBuffer[deletePointer]=0;
-                deletePointer=(deletePointer+1)%timeWindow;
-                timeDifference--;
-            }
+            deleteOldValues(timeDifference);
         }
     }
+
+    private void deleteOldValues(long timeDifference) {
+        int deletePointer= (int) ((lastRequestTime+1)%timeWindow);
+        while(timeDifference >0){
+            counter-=circularBuffer[deletePointer];
+            circularBuffer[deletePointer]=0;
+            deletePointer=(deletePointer+1)%timeWindow;
+            timeDifference--;
+        }
+    }
+
     public boolean isOverLoaded(){
         long requestTime=Clock.systemDefaultZone().millis()/1000;
         update(requestTime);

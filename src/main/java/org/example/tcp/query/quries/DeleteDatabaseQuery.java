@@ -18,7 +18,7 @@ public class DeleteDatabaseQuery extends DatabaseQuery {
         isBroadcastable=true;
         indexManager.getDatabaseLock().lock();
         try{
-            Optional<Database> database=indexManager.getDatabase(databaseName);
+            Optional<Database> database=getDatabase();
             database.orElseThrow(NoDatabaseFoundException::new);
             DiskOperations.deleteDatabase(databaseName);//hard delete
             indexManager.deleteDatabase(databaseName);//delete from the index structure

@@ -1,6 +1,4 @@
 package org.example.tcp.query.quries;
-
-import org.example.cluster.ClusterManager;
 import org.example.database.Database;
 import org.example.database.collection.Collection;
 import org.example.database.collection.document.DocumentDataTypes;
@@ -9,11 +7,9 @@ import org.example.exception.InvalidIndexPropertyObject;
 import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
 import org.example.file.system.DiskOperations;
-import org.example.index.types.Index;
-import org.example.index.types.IndexFactory;
+import org.example.index.Index;
 import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;
-import org.example.udp.UdpManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -28,10 +24,9 @@ public class CreateIndexQuery extends DatabaseQuery {
         clientMessage.put("code_number",0);
         isBroadcastable=true;
         try {
-            Optional<Database> database=indexManager.getDatabase(databaseName);
-            Optional<Collection> collection=database.orElseThrow(NoDatabaseFoundException::new).getCollection(collectionName);
+            Optional<Database> database=getDatabase();
+            Optional<Collection> collection=getCollection();
             database.orElseThrow(NoDatabaseFoundException::new).getCollectionLock().lock();
-
             Optional<JSONObject> propertyJson=getIndexProperty(databaseName,collectionName,indexPropertyObject);
             String property= (String) propertyJson.orElseThrow(InvalidIndexPropertyObject::new).get("key");
             DocumentDataTypes propertyDataType= (DocumentDataTypes) propertyJson.get().get("documentDataTypes");
@@ -60,8 +55,7 @@ public class CreateIndexQuery extends DatabaseQuery {
         return propertyJson;
     }
     private Index getIndexFromDataType(DocumentDataTypes propertyDataType){
-        IndexFactory indexFactory=new IndexFactory();
-        Index index=indexFactory.getIndexMap().get(propertyDataType);
+        Index index=new Index(propertyDataType);
         return index;
     }
 

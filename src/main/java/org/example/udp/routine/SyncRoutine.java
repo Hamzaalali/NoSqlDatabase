@@ -6,6 +6,6 @@ public class SyncRoutine extends UdpRoutine {
     @Override
     public void execute(JSONObject routineJson) {
         JSONObject query= (JSONObject) routineJson.get("query");
-        DatabaseQueryManager.getInstance().execute(query);
+        DatabaseQueryManager.getInstance().syncExecute(query);
     }
 }

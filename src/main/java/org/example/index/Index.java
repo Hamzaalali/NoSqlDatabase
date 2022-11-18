@@ -1,11 +1,17 @@
-package org.example.index.types;
+package org.example.index;
 
+import org.example.database.collection.document.DocumentDataTypes;
 import org.example.index.BPlusTree.BTree;
+import org.example.index.BtreeSupplier;
 import org.json.simple.JSONObject;
 
-public abstract class Index {
+public class Index {
     protected BTree index;
     protected JSONObject indexPropertyObject;
+    public Index(DocumentDataTypes documentDataType){
+        BtreeSupplier btreeSupplier=new BtreeSupplier();
+        index=btreeSupplier.get(documentDataType);
+    }
     public BTree getIndex() {
         return index;
     }
