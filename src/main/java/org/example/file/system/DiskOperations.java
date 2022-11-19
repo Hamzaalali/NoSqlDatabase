@@ -1,5 +1,4 @@
 package org.example.file.system;
-
 import org.apache.commons.io.FileUtils;
 import org.example.database.collection.document.DocumentSchema;
 import org.json.simple.JSONArray;
@@ -17,6 +16,9 @@ import java.nio.file.Paths;
 import java.util.List;
 public class DiskOperations {
     private static final String storageDirectoryPath="storage";
+    private DiskOperations(){
+
+    }
     public static void createDatabase(String databaseName) throws IOException {
         if(databaseExists(databaseName)){
             throw new FileAlreadyExistsException("Database Exists!");

@@ -11,6 +11,7 @@ public class DocumentSchema {
         verifyJsonTypes(schema);
         this.schema = schema;
     }
+    //verify that the document follow the schema
     public void verify(JSONObject jsonObject){
         verifyDocumentJson(jsonObject, schema);
     }
@@ -43,6 +44,7 @@ public class DocumentSchema {
             throw new IllegalArgumentException();
         }
     }
+    //verify that the schema follow the defined types
     public static void verifyJsonTypes(JSONObject documentSchema){
         for (Object value : documentSchema.values()) {
             if(value.getClass()== JSONObject.class ){
