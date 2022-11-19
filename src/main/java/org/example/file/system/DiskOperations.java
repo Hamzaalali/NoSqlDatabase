@@ -37,7 +37,6 @@ public class DiskOperations {
         if(collectionExists(databaseName,collectionName)){
             throw new FileAlreadyExistsException("Collection Exists!");
         }
-        System.out.println("collection does not exists");
         createDirectoryIfNotFound(databasePath(databaseName)+"/"+collectionName);
         writeToFile(collectionPath(databaseName,collectionName),new JSONArray().toJSONString());
         writeToFile(collectionSchemaPath(databaseName,collectionName),schema.toJSONString());
