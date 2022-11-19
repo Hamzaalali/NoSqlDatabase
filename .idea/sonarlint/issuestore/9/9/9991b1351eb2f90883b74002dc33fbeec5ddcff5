@@ -1,0 +1,14 @@
+
+o
+java:S2293G"YReplace the type specification in this constructor call with the diamond operator ("<>").(É¢‡¢
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¢«¸Œ
+u
+java:S4165i"_Remove this useless assignment; "i" already holds the assigned value along all execution paths.(ÈšØ»
+c	java:S119"IRename this generic name to match the regular expression '^[A-Z][0-9]?$'.(ØÖ™òúÿÿÿÿ
+c	java:S119"IRename this generic name to match the regular expression '^[A-Z][0-9]?$'.(ØÖ™òúÿÿÿÿ
+`
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(“øëüÿÿÿÿ
+H
+java:S1905"-Remove this unnecessary cast to "Comparable".(üËş¼úÿÿÿÿ
+P
+java:S1854h"5Remove this useless assignment to local variable "i".(µ€ùøÿÿÿÿ

@@ -1,0 +1,11 @@
+
+v
+java:S3655;"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(ÎÏ¡Ìÿÿÿÿÿ8âµÇÅÈ0
+n
+java:S3655#"XCall "propertyJson.isPresent()" or "!propertyJson.isEmpty()" before accessing the value.(äı¬
+j
+java:S3655D"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(‚ô¿¶
+E
+java:S2201"/The return value of "orElseThrow" must be used.(“¦Û
+J
+java:S2201""/The return value of "orElseThrow" must be used.(è­Û‰úÿÿÿÿ

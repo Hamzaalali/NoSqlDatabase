@@ -44,7 +44,6 @@ public class RequestLoad {
             deleteOldValues(timeDifference);
         }
     }
-
     private void deleteOldValues(long timeDifference) {
         int deletePointer= (int) ((lastRequestTime+1)%timeWindow);
         while(timeDifference >0){
@@ -54,20 +53,17 @@ public class RequestLoad {
             timeDifference--;
         }
     }
-
     public boolean isOverLoaded(){
         long requestTime=Clock.systemDefaultZone().millis()/1000;
         update(requestTime);
         if(counter>=maxRequests)return false;
         return true;
     }
-
     public void setTimeWindow(long timeWindow) {
         circularBuffer=new long[(int) timeWindow];
         Arrays.fill(circularBuffer,0);
         this.timeWindow = (int) timeWindow;
     }
-
     public void setMaxRequests(long maxRequests) {
         this.maxRequests = (int) maxRequests;
     }

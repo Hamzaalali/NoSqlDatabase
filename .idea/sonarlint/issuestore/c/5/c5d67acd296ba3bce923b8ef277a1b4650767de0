@@ -1,0 +1,27 @@
+
+f
+java:S1192+"IDefine a constant instead of duplicating this literal "_version" 5 times.(¥‰Ïò8ß‚ÅÈ0
+Q
+java:S1066-"/Merge this if statement with the enclosing one.(úˆ™îüÿÿÿÿ8”ÅÈ0
+p
+java:S36550"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(½¹äp8í‚ÅÈ0
+q
+java:S3655"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(‹‚—ª8ŞıÅÈ0
+p
+java:S3655G"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(½¹äp8ßıÅÈ0
+i
+java:S3655R"TCall "collection.isPresent()" or "!collection.isEmpty()" before accessing the value.(ÿ±Õ>
+L
+java:S2201"/The return value of "orElseThrow" must be used.(üò¦Ä8Â‘¸ÜÈ0
+Q
+java:S2201"/The return value of "orElseThrow" must be used.(ı²ïÓüÿÿÿÿ8Ã‘¸ÜÈ0
+L
+java:S2201"/The return value of "orElseThrow" must be used.(ğ°ÕÕ8Ã‘¸ÜÈ0
+S	java:S106#"9Replace this use of System.out or System.err by a logger.(¨¶ÑÍşÿÿÿÿ
+A
+java:S11689"$Return an empty map instead of null.(¥¹ï8ø‚ÅÈ0
+Q
+java:S1172<"4Remove this unused method parameter "clientMessage".(õù”¿8¶ê’ÅÈ0
+^
+java:S1126>"AReplace this if-then-else statement by a single return statement.(ÿÛë¶8·ê’ÅÈ0
+U	java:S106P"9Replace this use of System.out or System.err by a logger.(Õ¬Şÿ8êıÅÈ0

@@ -1,9 +1,5 @@
 package org.example.load.balance;
-
 import org.example.cluster.ClusterManager;
-
-import java.time.Clock;
-
 public class AffinityDistributor {
     private static volatile AffinityDistributor instance;
     int nodePointer;

@@ -6,7 +6,7 @@ import org.example.database.collection.Collection;
 import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
 import org.example.exception.NoDocumentFoundException;
-import org.example.exception.system.DiskOperations;
+import org.example.file.system.DiskOperations;
 import org.example.index.IndexManager;
 import org.example.udp.UdpManager;
 import org.example.udp.UdpRoutineTypes;

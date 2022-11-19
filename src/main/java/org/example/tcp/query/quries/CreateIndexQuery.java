@@ -6,7 +6,7 @@ import org.example.database.collection.document.DocumentSchema;
 import org.example.exception.InvalidIndexPropertyObject;
 import org.example.exception.NoCollectionFoundException;
 import org.example.exception.NoDatabaseFoundException;
-import org.example.exception.system.DiskOperations;
+import org.example.file.system.DiskOperations;
 import org.example.index.Index;
 import org.example.database.JsonUtils;
 import org.example.tcp.query.DatabaseQuery;

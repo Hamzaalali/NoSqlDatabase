@@ -1,8 +1,7 @@
-package org.example.exception.system;
+package org.example.file.system;
 
 import org.apache.commons.io.FileUtils;
 import org.example.database.collection.document.DocumentSchema;
-import org.example.exception.DatabaseExistsException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,17 +10,16 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
-
 public class DiskOperations {
     private static final String storageDirectoryPath="storage";
-    public static void createDatabase(String databaseName) throws IOException, DatabaseExistsException {
+    public static void createDatabase(String databaseName) throws IOException {
         if(databaseExists(databaseName)){
-            throw new DatabaseExistsException();
+            throw new FileAlreadyExistsException("Database Exists!");
         }
         createDirectoryIfNotFound(databasePath(databaseName));
     }
@@ -36,6 +34,10 @@ public class DiskOperations {
         if(!databaseExists(databaseName)){
             throw new IllegalArgumentException();
         }
+        if(collectionExists(databaseName,collectionName)){
+            throw new FileAlreadyExistsException("Collection Exists!");
+        }
+        System.out.println("collection does not exists");
         createDirectoryIfNotFound(databasePath(databaseName)+"/"+collectionName);
         writeToFile(collectionPath(databaseName,collectionName),new JSONArray().toJSONString());
         writeToFile(collectionSchemaPath(databaseName,collectionName),schema.toJSONString());
@@ -134,7 +136,7 @@ public class DiskOperations {
         return jsonObject;
     }
     private static boolean collectionExists(String databaseName,String collectionName){
-        return directoryOrFileExists(collectionPath(databaseName,collectionName));
+        return directoryOrFileExists(collectionDirectoryPath(databaseName,collectionName));
     }
     private static boolean databaseExists(String databaseName){
         return directoryOrFileExists(databasePath(databaseName));

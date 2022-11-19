@@ -2,7 +2,7 @@ package org.example.tcp.query.quries;
 
 import org.example.database.Database;
 import org.example.exception.NoDatabaseFoundException;
-import org.example.exception.system.DiskOperations;
+import org.example.file.system.DiskOperations;
 import org.example.tcp.query.DatabaseQuery;
 import org.json.simple.JSONObject;
 

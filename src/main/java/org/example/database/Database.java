@@ -10,7 +10,6 @@ public class Database {
     public Database(){
         collections=new HashMap<>();
         collectionLock=new ReentrantLock();
-
     }
     public ReentrantLock getCollectionLock(){
         return collectionLock;
