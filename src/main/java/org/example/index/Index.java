@@ -1,8 +1,7 @@
 package org.example.index;
 
-import org.example.database.collection.document.DocumentDataTypes;
 import org.example.index.BPlusTree.BTree;
-import org.example.index.BtreeSupplier;
+import org.example.database.collection.document.DocumentDataTypes;
 import org.json.simple.JSONObject;
 
 public class Index {

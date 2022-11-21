@@ -1,7 +1,8 @@
 package org.example.index;
 
-import org.example.database.collection.document.DocumentDataTypes;
 import org.example.index.BPlusTree.BTree;
+import org.example.database.collection.document.DocumentDataTypes;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

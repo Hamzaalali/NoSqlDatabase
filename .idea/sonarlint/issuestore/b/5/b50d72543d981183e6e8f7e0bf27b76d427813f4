@@ -1,0 +1,9 @@
+
+s	java:S135"YReduce the total number of break and continue statements in this loop to use at most one.(¦¹äÄüÿÿÿÿ
+m	java:S1351"YReduce the total number of break and continue statements in this loop to use at most one.(‹­M
+O
+java:S2864"4Iterate over the "entrySet" instead of the "keySet".(¦¹äÄüÿÿÿÿ
+O
+java:S2864P"4Iterate over the "entrySet" instead of the "keySet".(ÖÚç°şÿÿÿÿ
+:
+java:S1168d"$Return an empty map instead of null.(¥¹ï

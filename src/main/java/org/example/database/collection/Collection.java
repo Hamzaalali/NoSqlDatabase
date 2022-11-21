@@ -1,9 +1,9 @@
 package org.example.database.collection;
 
-import org.example.cluster.ClusterManager;
-import org.example.index.Index;
 import org.example.database.JsonUtils;
-import org.example.load.balance.AffinityDistributor;
+import org.example.index.Index;
+import org.example.cluster.ClusterManager;
+import org.example.balance.AffinityDistributor;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Collection {
     private Map<String , JSONObject>idIndex;//this json object should contain information about where the document is in the collection file
-    private Map<String,Index>indexes;
+    private Map<String, Index>indexes;
     private ReentrantLock documentLock;
     private boolean hasAffinity;
     private int nodeWithAffinity;
@@ -25,6 +25,9 @@ public class Collection {
 
     public void addIndex(String property,Index index){
         indexes.put(property,index);
+    }
+    public boolean containsIndex(String property){
+        return indexes.containsKey(property);
     }
     public ReentrantLock getDocumentLock(){
         return documentLock;

@@ -1,0 +1,22 @@
+
+`	java:S1121"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+}
+java:S1488J"bImmediately return this expression instead of assigning it to the temporary variable "collection".(è„°úÿÿÿÿ
+v
+java:S1488P"`Immediately return this expression instead of assigning it to the temporary variable "database".(³ÌÆ‘
+v
+java:S1488X"`Immediately return this expression instead of assigning it to the temporary variable "document".(²¤ê
+O
+java:S5993#"9Change the visibility of this constructor to "protected".(åúÜ
+X
+java:S1117I"BRename "collectionName" which hides the field declared at line 22.(Ôÿ×Ð
+V
+java:S1117O"@Rename "databaseName" which hides the field declared at line 21.(üñÐ
+V
+java:S1117T"@Rename "databaseName" which hides the field declared at line 21.(üñÐ
+_
+java:S1117U"BRename "collectionName" which hides the field declared at line 22.(Ôÿ×Ð8ÝÅ™ÜÈ0
+T
+java:S1117V">Rename "documentId" which hides the field declared at line 27.(ì¬¡â
+R
+java:S1117X"<Rename "document" which hides the field declared at line 23.(²¤ê
