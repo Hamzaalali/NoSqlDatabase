@@ -1,0 +1,7 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ƒ˜úÿÿÿÿ
+R
+java:S2440"0Remove this instantiation of "DocumentServices".(Âƒışÿÿÿÿ8„¡âßÉ0
+W
+java:S2209"5Change this instance-reference to a static reference.(¶Ë—àşÿÿÿÿ8“àâßÉ0

@@ -1,0 +1,7 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112*"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+n
+java:S3655$"XCall "propertyJson.isPresent()" or "!propertyJson.isEmpty()" before accessing the value.(—´´ø
+U
+java:S1118":Add a private constructor to hide the implicit public one.(Šôëïúÿÿÿÿ

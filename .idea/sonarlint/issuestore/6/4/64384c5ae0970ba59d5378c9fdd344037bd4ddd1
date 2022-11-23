@@ -1,0 +1,17 @@
+
+g	java:S112""FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8­å×É0
+f
+java:S1192"IDefine a constant instead of duplicating this literal "_version" 4 times.(À¡ƒÙ8­å×É0
+J
+java:S1066*"/Merge this if statement with the enclosing one.(§Ü¢¾üÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ƒ˜úÿÿÿÿ
+
+java:S4165+"dRemove this useless assignment; "update" already holds the assigned value along all execution paths.(ÌÇÑ‡8ˆÍ…×É0
+T
+java:S2589."7Remove this expression which always evaluates to "true"(¼İæà8‹Í…×É0
+R
+java:S2440/"0Remove this instantiation of "DocumentServices".(Âƒışÿÿÿÿ8€‡ãßÉ0
+W
+java:S22090"5Change this instance-reference to a static reference.(¶Ë—àşÿÿÿÿ8İ¬ãßÉ0
+W
+java:S11266"AReplace this if-then-else statement by a single return statement.(ÿÛë¶
