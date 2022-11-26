@@ -11,17 +11,17 @@ public class ClusterManager {
     private List<Node> nodes;
     private String broadcastIp;
     private int bootstrapperPort;//the port that the bootstrapper listens to for udp traffic
-    private int tcpPort;//the port that this server listens to for tcp connections
-    private int udpPort;//the port that this server listens to for udp traffic
-    private int nodeNumber;//this node number
     private int nodesNumber;
+    private Node thisNode;
     private ClusterManager() {
         bootstrapperPort= Integer.parseInt(System.getenv("BOOTSTRAPPER_PORT"));
         broadcastIp=System.getenv("BROADCAST_IP");
-        udpPort= Integer.parseInt(System.getenv("UDP_PORT"));
-        nodeNumber= Integer.parseInt(System.getenv("NODE_NUMBER"));
+        thisNode=new Node();
+        thisNode.setUdpPort(Integer.parseInt(System.getenv("UDP_PORT")));
+        thisNode.setNodeNumber(Integer.parseInt(System.getenv("NODE_NUMBER")));
         nodes=new ArrayList<>();
         nodesNumber=0;
+
     }
     public static ClusterManager getInstance() {
         ClusterManager result = instance;
@@ -62,20 +62,20 @@ public class ClusterManager {
         return bootstrapperPort;
     }
     public long getTcpPort() {
-        return tcpPort;
+        return thisNode.getTcpPort();
     }
     public void setTcpPort(long tcpPort) {
-        this.tcpPort =(int) tcpPort;
+        thisNode.setTcpPort((int) tcpPort);
     }
     public int getUdpPort() {
-        return udpPort;
+        return thisNode.getUdpPort();
     }
     public void setUdpPort(long udpPort) {
-        this.udpPort =(int) udpPort;
+        thisNode.setUdpPort((int) udpPort);
     }
 
     public int getNodeNumber() {
-        return nodeNumber;
+        return thisNode.getNodeNumber();
     }
 
     public int getNodesNumber() {

@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 public class Node {
     private int nodeNumber;
     private int tcpPort;
+    private int udpPort;
     private JSONObject nodeJsonObject;
     private String ip;
 
@@ -40,5 +41,13 @@ public class Node {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    public void setUdpPort(int udpPort) {
+        this.udpPort = udpPort;
     }
 }

@@ -1,0 +1,11 @@
+
+`	java:S112O"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+g
+java:S11926"LDefine a constant instead of duplicating this literal "code_number" 5 times.(¯¢¬¯ÿÿÿÿÿ
+‡
+java:S1130"qRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from constructor's body.(ç¯òø
+N	java:S106"9Replace this use of System.out or System.err by a logger.(æ»´Ú
+S	java:S106'"9Replace this use of System.out or System.err by a logger.(Ê»ª‚ýÿÿÿÿ
+S	java:S106("9Replace this use of System.out or System.err by a logger.(¬ó˜°ýÿÿÿÿ
+M	java:S106*"9Replace this use of System.out or System.err by a logger.(•ÀÏ1
+N	java:S1060"9Replace this use of System.out or System.err by a logger.(ó¤©Ö

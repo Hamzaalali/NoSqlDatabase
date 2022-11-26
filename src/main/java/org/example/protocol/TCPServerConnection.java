@@ -8,12 +8,14 @@ import org.example.authentication.User;
 import org.example.cluster.ClusterManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Optional;
 
 public class TCPServerConnection implements Runnable{
-        private Socket socket;
+        private final Socket socket;
         private User authenticatedUser;
         boolean isRunning;
         public TCPServerConnection(Socket socket) throws IOException {
@@ -23,7 +25,7 @@ public class TCPServerConnection implements Runnable{
         @Override
         public void run() {
             try{
-                authenticate();
+                getAuthenticatedUser();
                 getUserQueries();
             } catch (IOException e) {
                 System.out.println("Error With Connection");
@@ -61,31 +63,15 @@ public class TCPServerConnection implements Runnable{
                 clientMessage.put("data",data);
             }
         }catch (Exception e) {
-            System.out.println(e);
             clientMessage.put("code_number",1);
             clientMessage.put("error_message",e.getMessage());
         }
         return clientMessage;
     }
-    private void authenticate() throws IOException {
+    private void getAuthenticatedUser() throws IOException {
             JSONObject clientMessage=new JSONObject();
             try{
-                while(true){
-                    JSONObject userJson= TCPCommunicator.readJson(socket);
-                    String username=(String) userJson.get("username");
-                    String password=(String) userJson.get("password");
-                    Optional<User> user = AuthenticationManager.getInstance().authenticate(username, password);
-                    if(user.isPresent()){
-                        authenticatedUser=user.get();
-                        clientMessage.put("code_number",0);
-                        TCPCommunicator.sendJson(socket,clientMessage);
-                        break;
-                    }else{
-                        clientMessage.put("code_number",1);
-                        clientMessage.put("error_message","Invalid credentials");
-                        TCPCommunicator.sendJson(socket,clientMessage);
-                    }
-                }
+                authenticate(clientMessage);
             }catch (ConnectionTerminatedException e){
                 socket.close();
             }
@@ -93,16 +79,36 @@ public class TCPServerConnection implements Runnable{
                 throw new RuntimeException(e);
             }
         }
-        private void broadcastUser() throws IOException {
+
+    private void authenticate(JSONObject clientMessage) throws IOException, ParseException, ConnectionTerminatedException {
+        while(true){
+            JSONObject userJson= TCPCommunicator.readJson(socket);
+            String username=(String) userJson.get("username");
+            String password=(String) userJson.get("password");
+            Optional<User> user = AuthenticationManager.getInstance().authenticate(username, password);
+            if(user.isPresent()){
+                authenticatedUser=user.get();
+                clientMessage.put("code_number",0);
+                TCPCommunicator.sendJson(socket, clientMessage);
+                break;
+            }else{
+                clientMessage.put("code_number",1);
+                clientMessage.put("error_message","Invalid credentials");
+                TCPCommunicator.sendJson(socket, clientMessage);
+            }
+        }
+    }
+
+    private void broadcastUser() throws IOException {
             JSONObject userJson=authenticatedUser.toJsonObject();
             userJson.put("commandType", CommandTypes.ADD_USER.toString());
             UDPCommunicator.broadcastCommand(userJson);
-        }
-        private JSONObject redirectMessage(){
-            JSONObject redirectMessage=new JSONObject();
-            redirectMessage.put("code_number",2);
-            redirectMessage.put("nodes", ClusterManager.getInstance().getNodesJsonArray());
-            redirectMessage.put("thisTcpPort",ClusterManager.getInstance().getTcpPort());
-            return redirectMessage;
-        }
+    }
+    private JSONObject redirectMessage(){
+        JSONObject redirectMessage=new JSONObject();
+        redirectMessage.put("code_number",2);
+        redirectMessage.put("nodes", ClusterManager.getInstance().getNodesJsonArray());
+        redirectMessage.put("thisTcpPort",ClusterManager.getInstance().getTcpPort());
+        return redirectMessage;
+    }
 }
